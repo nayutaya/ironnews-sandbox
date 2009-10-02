@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
+ <head>
+  <title>iframeのテスト</title>
+  <style type="text/css">
+*
+{
+margin: 0;
+padding: 0;
+}
+body
+{
+overflow: hidden;
+}
+#control-panel
+{
+background-color: #FFF0FF;
+}
+#browse-panel
+{
+background-color: #FFFFF0;
+}
+#frame
+{
+border-style: solid;
+border-width: 1px;
+}
+  </style>
+  <script type="text/javascript" src="jquery-1.3.2.min.js"></script>
+  <script type="text/javascript">
+
+var adjust_size = function() {
+  var wdx = $(window).width();
+  var wdy = $(window).height();
+  //console.debug("window " + wdx + "x" + wdy);
+
+  var cdy = $("#control-panel").outerHeight();
+  //console.debug("control-panel x" + cdy);
+
+  var bdx = $("#browse-panel").outerWidth();
+  var bdy = $("#browse-panel").outerHeight();
+  //console.debug("browse " + bdx + "x" + bdy);
+  $("#browse-panel").height(wdy - cdy);
+
+  var frame = $("#frame");
+  var idx = frame.outerWidth()  - frame.innerWidth();
+  var idy = frame.outerHeight() - frame.innerHeight();
+  frame.width($("#browse-panel").innerWidth() - idx);
+  frame.height($("#browse-panel").innerHeight() - idy);
+};
+
+$(document).ready(function() {
+  //console.debug("ready");
+  adjust_size();
+});
+$(window).resize(function() {
+  //console.debug("resize");
+  adjust_size();
+});
+
+
+  </script>
+ </head>
+ <body>
+  <div id="control-panel">
+    コントロールパネル
+  </div>
+  <div id="browse-panel">
+   <iframe id="frame" src="http://www.google.co.jp/" width="300" height="200" />
+  </div>
+ </body>
+</html>
