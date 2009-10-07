@@ -1,0 +1,9 @@
+
+application: ironnews-helper1
+version: v1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /.*
+  script: app.py
