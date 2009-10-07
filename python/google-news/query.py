@@ -19,4 +19,13 @@ def create_url(keyword):
   url   += urllib.urlencode(params)
   return url
 
-print create_url("鉄道")
+url = create_url("鉄道")
+print url
+req = urllib2.Request(url = url)
+req.add_header("User-Agent", "ironnews google-news-crawler")
+
+io = urllib2.urlopen(req)
+src = io.read()
+io.close()
+
+print src
