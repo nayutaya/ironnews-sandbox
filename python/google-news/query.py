@@ -20,7 +20,7 @@ def create_url(keyword):
   return url
 
 url = create_url("鉄道")
-print url
+#print url
 req = urllib2.Request(url = url)
 req.add_header("User-Agent", "ironnews google-news-crawler")
 
@@ -28,4 +28,20 @@ io = urllib2.urlopen(req)
 src = io.read()
 io.close()
 
-print src
+#print src
+
+f = open("out.txt", "wb")
+f.write(src)
+f.close()
+
+import re
+pattern = re.compile(r"url=(.+?)&")
+urls = re.findall(pattern, src)
+for x in urls:
+  print urllib.unquote_plus(x)
+
+print "---"
+
+uniq_urls = sorted(set(urls), key = urls.index)
+for x in uniq_urls:
+  print urllib.unquote_plus(x)
