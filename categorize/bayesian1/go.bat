@@ -33,3 +33,6 @@ rem copy out\30.rail out\30.rail.1
 rem copy out\30.rest out\30.rest.1
 ruby 30_frequency.rb < out\20.rail > out\30.rail
 ruby 30_frequency.rb < out\20.rest > out\30.rest
+
+rem copy out\32 out\32.1
+ruby 32_merge.rb out\30.rail out\30.rest > out\32
