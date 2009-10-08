@@ -1,5 +1,7 @@
 #! ruby -Ku
 
+# 記号を置換する
+
 STDOUT.binmode
 
 STDIN.each { |line|
