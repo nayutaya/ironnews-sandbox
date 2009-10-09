@@ -14,11 +14,73 @@ class BayesianClassifier
   end
 
   def add(category, document)
-    tokens = @tokenizer.tokenize(document)
-    tokens.each { |token|
-      @features[token][category] += 1
+    features = @tokenizer.tokenize(document)
+    features.each { |feature|
+      @features[feature][category] += 1
     }
     @quantities[category] += 1
     return self
+  end
+
+  # あるカテゴリの中に、ある特徴が現れた数
+  def fcount(feature, category)
+    return @features[feature][category]
+  end
+
+  # あるカテゴリの中のドキュメント数
+  def catcount(category)
+    return @quantities[category]
+  end
+
+  # ドキュメントの総数
+  def totalcount
+    return @quantities.values.inject { |ret, val| ret + val }
+  end
+
+  # カテゴリの一覧
+  def categories
+    return @quantities.keys
+  end
+
+  # ある特徴が、あるカテゴリに現れる確率
+  def fprob(feature, category)
+    count = self.catcount(category)
+    return 0.0 if count == 0
+    return self.fcount(feature, category).to_f / count.to_f
+  end
+
+  def weightedprob(feature, category, weight = 1.0, ap = 0.5)
+    basicprob = self.fprob(feature, category)
+    totals    = self.categories.
+      map { |cat| self.fcount(feature, cat) }.
+      inject(0.0) { |ret, val| ret + val }
+    return ((weight * ap) + (totals * basicprob)) / (weight + totals)
+  end
+
+  def docprob(features, category)
+    return features.inject(1.0) { |prob, feature|
+      prob * weightedprob(feature, category)
+    }
+  end
+
+  def prob(features, category)
+    catprob = self.catcount(category).to_f / self.totalcount.to_f
+    docprob = self.docprob(features, category)
+    return docprob * catprob
+  end
+
+  def classifier(document, thresholds = Hash.new(1.0))
+    features = @tokenizer.tokenize(document)
+    probs = self.categories.
+      map { |category| [category, self.prob(features, category)] }.
+      sort_by { |category, prob| prob }.
+      reverse
+    first_category,  first_prob  = probs[0]
+    second_category, second_prob = probs[1]
+    if first_prob > second_prob * thresholds[second_category]
+      return first_category
+    else
+      return nil
+    end
   end
 end

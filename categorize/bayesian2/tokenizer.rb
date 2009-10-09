@@ -1,9 +1,12 @@
 #! ruby -Ku
 
+# 2-gram解析器
+
 require "nkf"
 
 class BigramTokenizer
   def initialize
+    # nop
   end
 
   def preprocess(doc)
@@ -28,6 +31,3 @@ class BigramTokenizer
       map { |chars| chars.join("") }
   end
 end
-
-tokenizer = BigramTokenizer.new
-p tokenizer.tokenize("１０、１１日 「鉄道の日」行事華やかに 長野")
