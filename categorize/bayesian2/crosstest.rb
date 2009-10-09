@@ -12,7 +12,7 @@ rest_titles = File.open("../data/title_nonrail.txt") { |file| file.map { |line| 
 rail_titles.each { |title| classifier.add("rail", title) }
 rest_titles.each { |title| classifier.add("rest", title) }
 
-thresholds = {"rail" => 1.0, "rest" => 3.0}
+thresholds = {"rail" => 1.0, "rest" => 3.5}
 
 rail_table = Hash.new(0)
 rail_titles.each { |title|
