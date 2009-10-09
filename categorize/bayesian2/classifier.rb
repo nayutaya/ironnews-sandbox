@@ -76,7 +76,7 @@ class BayesianClassifier
       sort_by { |category, prob| prob }
     first_category,  first_prob  = probs[-1]
     second_category, second_prob = probs[-2]
-    if first_prob > second_prob * thresholds[second_category]
+    if first_prob > second_prob * thresholds[first_category]
       return first_category
     else
       return nil
