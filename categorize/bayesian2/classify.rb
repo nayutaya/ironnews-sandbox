@@ -14,16 +14,20 @@ rest_titles.each { |title| classifier.add("rest", title) }
 
 thresholds = {"rail" => 1.0, "rest" => 3.0}
 
-STDOUT.binmode
+results = Hash.new { |hash, key|
+  hash[key] = []
+}
 
 STDIN.each { |title|
   title.chomp!
-  category =
-    case classifier.classifier(title, thresholds)
-    when "rail" then "鉄道"
-    when "rest" then "非鉄"
-    when nil    then "不明"
-    else raise
-    end
-  printf("%s|%s\n", category, title)
+  category = classifier.classifier(title, thresholds) || "unknown"
+  results[category] << title
+}
+
+results.each { |category, titles|
+  File.open("out.#{category}", "wb") { |file|
+    titles.each { |title|
+      file.puts(title)
+    }
+  }
 }
