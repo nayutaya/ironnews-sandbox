@@ -53,13 +53,13 @@ class BayesianClassifier
     basicprob = self.fprob(feature, category)
     totals    = self.categories.
       map { |cat| self.fcount(feature, cat) }.
-      inject(0.0) { |ret, val| ret + val }
+      inject { |ret, val| ret + val }.to_f
     return ((weight * ap) + (totals * basicprob)) / (weight + totals)
   end
 
   def docprob(features, category)
     return features.inject(1.0) { |prob, feature|
-      prob * weightedprob(feature, category)
+      prob * self.weightedprob(feature, category)
     }
   end
 
@@ -73,10 +73,9 @@ class BayesianClassifier
     features = @tokenizer.tokenize(document)
     probs = self.categories.
       map { |category| [category, self.prob(features, category)] }.
-      sort_by { |category, prob| prob }.
-      reverse
-    first_category,  first_prob  = probs[0]
-    second_category, second_prob = probs[1]
+      sort_by { |category, prob| prob }
+    first_category,  first_prob  = probs[-1]
+    second_category, second_prob = probs[-2]
     if first_prob > second_prob * thresholds[second_category]
       return first_category
     else
