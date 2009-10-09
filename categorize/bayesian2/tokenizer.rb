@@ -20,6 +20,7 @@ class BigramTokenizer
     text.gsub!(/】/, ">")
     text.gsub!(/《/, "<")
     text.gsub!(/》/, ">")
+    text = " " + text + " "                 # 行頭と行末に空白を追加する
 
     return text
   end
