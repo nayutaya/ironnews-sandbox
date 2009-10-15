@@ -6,8 +6,8 @@ require "nkf"
 require "rubygems"
 require "nokogiri"
 
-start_date = Date.new(2009, 3, 1)
-end_date   = Date.new(2009, 4, 1) - 1
+start_date = Date.new(2009, 2, 1)
+end_date   = Date.new(2009, 3, 1) - 1
 
 (start_date..end_date).each { |date|
   STDERR.puts(date.strftime("%Y/%m/%d"))
