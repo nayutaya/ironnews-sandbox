@@ -2,29 +2,32 @@
 
 class Dictionary
   def initialize
-    @table = {}
-    @table2 = {}
+    @obj2id = {}
+    @id2obj = {}
   end
 
-  def to(word)
-    return @table[word] ||
+  def encode(obj)
+    return @obj2id[obj] ||
       begin
-        @table2[@table.size + 1] = word
-        @table[word] = @table.size + 1
+        id = @obj2id.size + 1
+        @id2obj[id]  = obj
+        @obj2id[obj] = id
+        id
       end
   end
 
-  def from(id)
-    return @table2[id]
+  def decode(id)
+    return @id2obj[id]
   end
 end
 
 dict = Dictionary.new
-p dict.to("a")
-p dict.to("b")
-p dict.to("a")
-p dict.to("b")
+p dict.encode("a")
+p dict.encode("b")
+p dict.encode("a")
+p dict.encode("b")
+p dict.encode(1)
 
-p dict.from(1)
-p dict.from(2)
-p dict.from(3)
+p dict.decode(1)
+p dict.decode(2)
+p dict.decode(3)
