@@ -54,35 +54,37 @@ class ThreeLayerPerceptronNetwork
     @default_mid_out_weight = 0.0
     @default_mid_bias       = 0.0
 
-    @in_mid_weight = Hash.new { |hash1, in_id|
-      hash1[in_id] = Hash.new { |hash2, mid_id|
-        hash2[mid_id] = self.default_in_mid_weight
+    @in_mid_weight = Hash.new { |in_mid, in_key|
+      in_mid[in_key] = Hash.new { |mid_weight, mid_key|
+        mid_weight[mid_key] = self.default_in_mid_weight
       }
     }
-    @mid_out_weight = Hash.new { |hash1, mid_id|
-      hash1[mid_id] = Hash.new { |hash2, out_id|
-        hash2[out_id] = self.default_mid_out_weight
+
+    @mid_out_weight = Hash.new { |mid_out, mid_key|
+      mid_out[mid_key] = Hash.new { |out_weight, out_key|
+        out_weight[out_key] = self.default_mid_out_weight
       }
     }
-    @mid_bias = Hash.new { |hash, mid_id|
-      hash[mid_id] = self.default_mid_bias
+
+    @mid_bias = Hash.new { |mid_bias, mid_key|
+      mid_bias[mid_key] = self.default_mid_bias
     }
   end
 
   attr_accessor :default_in_mid_weight, :default_mid_out_weight, :default_mid_bias
   attr_reader :in_mid_weight, :mid_out_weight, :mid_bias
 
-  def in_ids
+  def in_keys
     return @in_mid_weight.keys.sort
   end
 
-  def out_ids
-    return @mid_out_weight.map { |mid_id, out_weight|
+  def out_keys
+    return @mid_out_weight.map { |mid_key, out_weight|
       out_weight.keys
     }.flatten.sort.uniq
   end
 
-  def mid_ids
+  def mid_keys
     return @mid_bias.keys.sort
   end
 end
@@ -92,48 +94,48 @@ network = ThreeLayerPerceptronNetwork.new
 
 =begin
 p network.in_mid_weight
-p network.in_ids
+p network.in_keys
 network.default_in_mid_weight = -1.0
 network.in_mid_weight[0][0] = 1.0
 network.in_mid_weight[0][1] = 2.0
 network.in_mid_weight[1][0] = 3.0
 p network.in_mid_weight
-p network.in_ids
+p network.in_keys
 p network.in_mid_weight[0][0]
 p network.in_mid_weight[0][1]
 p network.in_mid_weight[1][0]
 p network.in_mid_weight[2][2]
-p network.in_ids
+p network.in_keys
 =end
 
 =begin
 p network.mid_out_weight
-p network.out_ids
+p network.out_keys
 network.default_mid_out_weight = -2.0
 network.mid_out_weight[0][0] = 1.0
 network.mid_out_weight[0][1] = 2.0
 network.mid_out_weight[1][0] = 3.0
 p network.mid_out_weight
-p network.out_ids
+p network.out_keys
 p network.mid_out_weight[0][0]
 p network.mid_out_weight[0][1]
 p network.mid_out_weight[1][0]
 p network.mid_out_weight[1][2]
-p network.out_ids
+p network.out_keys
 =end
 
 =begin
 p network.mid_bias
-p network.mid_ids
+p network.mid_keys
 network.default_mid_bias = -3.0
 network.mid_bias[0] = 1.0
 network.mid_bias[1] = 2.0
 p network.mid_bias
-p network.mid_ids
+p network.mid_keys
 p network.mid_bias[0]
 p network.mid_bias[1]
 p network.mid_bias[2]
-p network.mid_ids
+p network.mid_keys
 =end
 
 __END__
