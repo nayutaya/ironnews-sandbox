@@ -71,46 +71,69 @@ class ThreeLayerPerceptronNetwork
 
   attr_accessor :default_in_mid_weight, :default_mid_out_weight, :default_mid_bias
   attr_reader :in_mid_weight, :mid_out_weight, :mid_bias
+
+  def in_ids
+    return @in_mid_weight.keys.sort
+  end
+
+  def out_ids
+    return @mid_out_weight.map { |mid_id, out_weight|
+      out_weight.keys
+    }.flatten.sort.uniq
+  end
+
+  def mid_ids
+    return @mid_bias.keys.sort
+  end
 end
 
 network = ThreeLayerPerceptronNetwork.new
-p network
+#p network
 
 =begin
 p network.in_mid_weight
+p network.in_ids
 network.default_in_mid_weight = -1.0
 network.in_mid_weight[0][0] = 1.0
 network.in_mid_weight[0][1] = 2.0
 network.in_mid_weight[1][0] = 3.0
 p network.in_mid_weight
+p network.in_ids
 p network.in_mid_weight[0][0]
 p network.in_mid_weight[0][1]
 p network.in_mid_weight[1][0]
-p network.in_mid_weight[1][1]
+p network.in_mid_weight[2][2]
+p network.in_ids
 =end
 
 =begin
 p network.mid_out_weight
+p network.out_ids
 network.default_mid_out_weight = -2.0
 network.mid_out_weight[0][0] = 1.0
 network.mid_out_weight[0][1] = 2.0
 network.mid_out_weight[1][0] = 3.0
 p network.mid_out_weight
+p network.out_ids
 p network.mid_out_weight[0][0]
 p network.mid_out_weight[0][1]
 p network.mid_out_weight[1][0]
-p network.mid_out_weight[1][1]
+p network.mid_out_weight[1][2]
+p network.out_ids
 =end
 
 =begin
 p network.mid_bias
+p network.mid_ids
 network.default_mid_bias = -3.0
 network.mid_bias[0] = 1.0
 network.mid_bias[1] = 2.0
 p network.mid_bias
+p network.mid_ids
 p network.mid_bias[0]
 p network.mid_bias[1]
 p network.mid_bias[2]
+p network.mid_ids
 =end
 
 __END__
