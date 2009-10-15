@@ -60,9 +60,9 @@ class ThreeLayerPerceptronNetwork
       }
     }
 
-    @mid_out_weight = Hash.new { |mid_out, mid_key|
-      mid_out[mid_key] = Hash.new { |out_weight, out_key|
-        out_weight[out_key] = self.default_mid_out_weight
+    @out_mid_weight = Hash.new { |out_mid, out_key|
+      out_mid[out_key] = Hash.new { |mid_weight, mid_key|
+        mid_weight[mid_key] = self.default_mid_out_weight
       }
     }
 
@@ -72,23 +72,46 @@ class ThreeLayerPerceptronNetwork
   end
 
   attr_accessor :default_in_mid_weight, :default_mid_out_weight, :default_mid_bias
-  attr_reader :in_mid_weight, :mid_out_weight, :mid_bias
+
+  def get_in_mid_weight(in_key, mid_key)
+    return @in_mid_weight[in_key][mid_key]
+  end
+
+  def set_in_mid_weight(in_key, mid_key, weight)
+    @in_mid_weight[in_key][mid_key] = weight
+    @mid_bias[mid_key] # set default bias
+    return self
+  end
+
+  def get_mid_out_weight(mid_key, out_key)
+    return @out_mid_weight[out_key][mid_key]
+  end
+
+  def set_mid_out_weight(mid_key, out_key, weight)
+    @out_mid_weight[out_key][mid_key] = weight
+    @mid_bias[mid_key] # set default bias
+    return self
+  end
+
+  def get_mid_bias(mid_key)
+    return @mid_bias[mid_key]
+  end
+
+  def set_mid_bias(mid_key, bias)
+    @mid_bias[mid_key] = bias
+    return self
+  end
 
   def in_keys
     return @in_mid_weight.keys.sort
   end
 
   def out_keys
-    return @mid_out_weight.map { |mid_key, out_weight|
-      out_weight.keys
-    }.flatten.sort.uniq
+    return @out_mid_weight.keys.sort
   end
 
   def mid_keys
-    #return @mid_bias.keys.sort
-    return @in_mid_weight.map { |in_key, mid_weight|
-      mid_weight.keys
-    }.flatten.sort.uniq
+    return @mid_bias.keys.sort
   end
 
   def in_mid_links
@@ -113,25 +136,19 @@ class ThreeLayerPerceptronNetwork
 end
 
 network = ThreeLayerPerceptronNetwork.new
-#p network
 
-#p network.in_mid_links
+p network
+network.set_in_mid_weight(0, 1, 1.0)
+network.set_in_mid_weight(0, 2, 2.0)
+p network
+network.set_mid_bias(2, 3.0)
+network.set_mid_bias(3, 4.0)
+p network
+network.set_mid_out_weight(3, 4, 5.0)
+network.set_mid_out_weight(3, 5, 6.0)
+p network
 
-network.in_mid_weight[0][0] = 1.0
-network.in_mid_weight[0][1] = 2.0
-network.in_mid_weight[1][3] = 3.0
-#p network.in_mid_links
-
-p network.mid_out_links
-
-network.mid_bias[0] = 4.0
-network.mid_bias[3] = 5.0
-#p network.in_mid_links
-p network.mid_out_links
-
-network.mid_out_weight[0][0] = 1.0
-network.mid_out_weight[0][1] = 2.0
-network.mid_out_weight[1][0] = 3.0
+p network.in_mid_links
 p network.mid_out_links
 
 
