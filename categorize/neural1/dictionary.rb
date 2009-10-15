@@ -50,18 +50,3 @@ class Dictionary
     end
   end
 end
-
-dict = Dictionary.new
-p dict.encode("a")
-p dict.encode("b")
-p dict.encode("a")
-p dict.encode("b")
-p dict.encode(1)
-p dict.encode_multiple(["a", "b", 1, 2])
-p dict.encode_multiple({"a" => :a, "b" => :b, 1 => :one, 2 => :two})
-
-p dict.decode(1)
-p dict.decode(2)
-p dict.decode(3)
-p dict.decode_multiple([1, 2, 3, 5])
-p dict.decode_multiple({1 => :a, 2 => :b, 3 => :one, 5 => :nil})
