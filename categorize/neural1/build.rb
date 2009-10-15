@@ -63,6 +63,10 @@ class Neural
     return @in_dict[key]
   end
 
+  def add_out_dict(key)
+    return @out_dict[key]
+  end
+
   attr_reader :in_dict, :out_dict
 end
 
@@ -82,3 +86,8 @@ nonrail.each { |title|
 
 p neural.in_dict
 p neural.in_dict.size
+
+neural.add_out_dict("rail")
+neural.add_out_dict("nonrail")
+p neural.out_dict
+p neural.out_dict.size
