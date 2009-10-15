@@ -48,6 +48,73 @@ rail = (<<EOS).lines.map { |line| line.strip }
 名古屋始発、東京行き「のぞみ」誕生　ＪＲ東海
 EOS
 
+class ThreeLayerPerceptronNetwork
+  def initialize
+    @default_in_mid_weight  = 0.0
+    @default_mid_out_weight = 0.0
+    @default_mid_bias       = 0.0
+
+    @in_mid_weight = Hash.new { |hash1, in_id|
+      hash1[in_id] = Hash.new { |hash2, mid_id|
+        hash2[mid_id] = self.default_in_mid_weight
+      }
+    }
+    @mid_out_weight = Hash.new { |hash1, mid_id|
+      hash1[mid_id] = Hash.new { |hash2, out_id|
+        hash2[out_id] = self.default_mid_out_weight
+      }
+    }
+    @mid_bias = Hash.new { |hash, mid_id|
+      hash[mid_id] = self.default_mid_bias
+    }
+  end
+
+  attr_accessor :default_in_mid_weight, :default_mid_out_weight, :default_mid_bias
+  attr_reader :in_mid_weight, :mid_out_weight, :mid_bias
+end
+
+network = ThreeLayerPerceptronNetwork.new
+p network
+
+=begin
+p network.in_mid_weight
+network.default_in_mid_weight = -1.0
+network.in_mid_weight[0][0] = 1.0
+network.in_mid_weight[0][1] = 2.0
+network.in_mid_weight[1][0] = 3.0
+p network.in_mid_weight
+p network.in_mid_weight[0][0]
+p network.in_mid_weight[0][1]
+p network.in_mid_weight[1][0]
+p network.in_mid_weight[1][1]
+=end
+
+=begin
+p network.mid_out_weight
+network.default_mid_out_weight = -2.0
+network.mid_out_weight[0][0] = 1.0
+network.mid_out_weight[0][1] = 2.0
+network.mid_out_weight[1][0] = 3.0
+p network.mid_out_weight
+p network.mid_out_weight[0][0]
+p network.mid_out_weight[0][1]
+p network.mid_out_weight[1][0]
+p network.mid_out_weight[1][1]
+=end
+
+=begin
+p network.mid_bias
+network.default_mid_bias = -3.0
+network.mid_bias[0] = 1.0
+network.mid_bias[1] = 2.0
+p network.mid_bias
+p network.mid_bias[0]
+p network.mid_bias[1]
+p network.mid_bias[2]
+=end
+
+__END__
+
 class Neural
   def initialize(tokenizer)
     @tokenizer = tokenizer
@@ -57,6 +124,7 @@ class Neural
     @out_dict = Hash.new { |hash, key|
       hash[key] = hash.size
     }
+    @sigmoid = proc { |x| x }
   end
 
   def add_in_dict(key)
