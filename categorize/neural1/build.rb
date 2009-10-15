@@ -85,58 +85,55 @@ class ThreeLayerPerceptronNetwork
   end
 
   def mid_keys
-    return @mid_bias.keys.sort
+    #return @mid_bias.keys.sort
+    return @in_mid_weight.map { |in_key, mid_weight|
+      mid_weight.keys
+    }.flatten.sort.uniq
+  end
+
+  def in_mid_links
+    links = []
+    self.in_keys.each { |in_key|
+      self.mid_keys.each { |mid_key|
+        links << [in_key, mid_key]
+      }
+    }
+    return links
+  end
+
+  def mid_out_links
+    links = []
+    self.mid_keys.each { |mid_key|
+      self.out_keys.each { |out_key|
+        links << [mid_key, out_key]
+      }
+    }
+    return links
   end
 end
 
 network = ThreeLayerPerceptronNetwork.new
 #p network
 
-=begin
-p network.in_mid_weight
-p network.in_keys
-network.default_in_mid_weight = -1.0
+#p network.in_mid_links
+
 network.in_mid_weight[0][0] = 1.0
 network.in_mid_weight[0][1] = 2.0
-network.in_mid_weight[1][0] = 3.0
-p network.in_mid_weight
-p network.in_keys
-p network.in_mid_weight[0][0]
-p network.in_mid_weight[0][1]
-p network.in_mid_weight[1][0]
-p network.in_mid_weight[2][2]
-p network.in_keys
-=end
+network.in_mid_weight[1][3] = 3.0
+#p network.in_mid_links
 
-=begin
-p network.mid_out_weight
-p network.out_keys
-network.default_mid_out_weight = -2.0
+p network.mid_out_links
+
+network.mid_bias[0] = 4.0
+network.mid_bias[3] = 5.0
+#p network.in_mid_links
+p network.mid_out_links
+
 network.mid_out_weight[0][0] = 1.0
 network.mid_out_weight[0][1] = 2.0
 network.mid_out_weight[1][0] = 3.0
-p network.mid_out_weight
-p network.out_keys
-p network.mid_out_weight[0][0]
-p network.mid_out_weight[0][1]
-p network.mid_out_weight[1][0]
-p network.mid_out_weight[1][2]
-p network.out_keys
-=end
+p network.mid_out_links
 
-=begin
-p network.mid_bias
-p network.mid_keys
-network.default_mid_bias = -3.0
-network.mid_bias[0] = 1.0
-network.mid_bias[1] = 2.0
-p network.mid_bias
-p network.mid_keys
-p network.mid_bias[0]
-p network.mid_bias[1]
-p network.mid_bias[2]
-p network.mid_keys
-=end
 
 __END__
 
