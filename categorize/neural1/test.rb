@@ -19,6 +19,9 @@ tokenizer = BigramTokenizer.new
 input_dict  = Dictionary.new
 output_dict = Dictionary.new
 
+output_dict.encode("rail")
+output_dict.encode("rest")
+
 network = ThreeLayerPerceptronNetwork.new(10)
 
 puts "init..."
@@ -49,7 +52,9 @@ File.open("out.rail", "wb") { |file|
     input_ids = input_dict.encode_multiple(tokens)
     input_values = input_ids.inject({}) { |memo, id| memo[id] = 1.0; memo }
     results = network.feedforward(input_values)
-    file.puts([results, title].inspect)
+    category = (results[1] > results[2] ? "rail" : "rest")
+    file.printf("%s %s\n", category, title)
+    #file.puts([results, title].inspect)
   }
 }
 
@@ -60,6 +65,8 @@ File.open("out.rest", "wb") { |file|
     input_ids = input_dict.encode_multiple(tokens)
     input_values = input_ids.inject({}) { |memo, id| memo[id] = 1.0; memo }
     results = network.feedforward(input_values)
-    file.puts([results, title].inspect)
+    category = (results[1] > results[2] ? "rail" : "rest")
+    file.printf("%s %s\n", category, title)
+    #file.puts([results, title].inspect)
   }
 }

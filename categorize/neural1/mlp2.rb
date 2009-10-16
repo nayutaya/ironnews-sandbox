@@ -3,7 +3,7 @@
 class LinkWeight
   def initialize
     @weight  = {}
-    @default = proc { rand }
+    @default = proc { (rand - 0.5) / 5.0 }
   end
 
   def get(from, to)
