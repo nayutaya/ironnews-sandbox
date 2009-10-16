@@ -30,10 +30,8 @@ class ThreeLayerPerceptronNetwork
     }
   end
 
-  def feedforward_in_mid(in_values)
-    in_values = in_values.merge(0 => 1.0)
-
-    mid = {0 => 1.0}
+  def feedforward_in_to_mid(in_values)
+    mid = {}
     (1..@mid_num).each { |mid_key|
       sum = 0.0
       in_values.each { |in_key, in_value|
@@ -46,7 +44,7 @@ class ThreeLayerPerceptronNetwork
     return mid
   end
 
-  def feedforward_mid_out(mid_values)
+  def feedforward_mid_to_out(mid_values)
     out = {}
     (1..@out_num).each { |out_key|
       sum = 0.0
@@ -61,12 +59,10 @@ class ThreeLayerPerceptronNetwork
     return out
   end
 
-  def fire(values)
-
-    mid = self.feedforward_in_mid(values)
-    out = self.feedforward_mid_out(mid)
-
-    return out
+  def fire(in_values)
+    mid_values = self.feedforward_in_to_mid(in_values.merge(0 => 1.0))
+    out_values = self.feedforward_mid_to_out(mid_values.merge(0 => 1.0))
+    return out_values
   end
 
   def dtanh(x)
@@ -77,26 +73,10 @@ class ThreeLayerPerceptronNetwork
   def train(in_values, ret_values)
     in_values[0] = 1.0
 
-    mid = {0 => 1.0}
-    (1..@mid_num).each { |mid_key|
-      sum = 0.0
-      in_values.each { |in_key, in_value|
-        weight = @in_mid[in_key][mid_key]
-        sum += in_value * weight
-      }
-      mid[mid_key] = Math.tanh(sum)
-    }
+    mid = self.feedforward_in_to_mid(in_values)
+    mid[0] = 1.0
 
-    out = {}
-    (1..@out_num).each { |out_key|
-      sum = 0.0
-      (0..@mid_num).each { |mid_key|
-        weight = @mid_out[mid_key][out_key]
-        value  = mid[mid_key]
-        sum += value * weight
-      }
-      out[out_key] = Math.tanh(sum)
-    }
+    out = self.feedforward_mid_to_out(mid)
 
     out_delta = {}
     (1..@out_num).each { |out_key|
