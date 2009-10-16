@@ -51,9 +51,12 @@ class ThreeLayerPerceptronNetwork
   end
 
   def feedforward_input_to_hidden(input_values)
-    return (1..@hidden_num).inject({}) { |hidden_values, hidden_id|
-      sum = input_values.inject(0.0) { |result, (input_id, input_value)|
-        value  = input_value
+    hidden_ids = (1..@hidden_num)
+    input_ids  = input_values.keys
+
+    return hidden_ids.inject({}) { |hidden_values, hidden_id|
+      sum = input_ids.inject(0.0) { |result, input_id|
+        value  = input_values[input_id]
         weight = @input_hidden_weight[input_id, hidden_id]
         result + (value * weight)
       }
@@ -63,8 +66,11 @@ class ThreeLayerPerceptronNetwork
   end
 
   def feedforward_hidden_to_output(hidden_values)
-    return @output_hidden_weight.from_keys.inject({}) { |output_values, output_id|
-      sum = (0..@hidden_num).inject(0.0) { |result, hidden_id|
+    output_ids = @output_hidden_weight.from_keys
+    hidden_ids = (0..@hidden_num)
+
+    return output_ids.inject({}) { |output_values, output_id|
+      sum = hidden_ids.inject(0.0) { |result, hidden_id|
         value  = hidden_values[hidden_id]
         weight = @output_hidden_weight[output_id, hidden_id]
         result + value * weight
@@ -103,9 +109,10 @@ class ThreeLayerPerceptronNetwork
   end
 
   def calc_hidden_delta(output_delta, hidden_values)
+    hidden_ids = (0..@hidden_num)
     output_ids = output_delta.keys
 
-    return (0..@hidden_num).inject({}) { |hidden_delta, hidden_id|
+    return hidden_ids.inject({}) { |hidden_delta, hidden_id|
       error = output_ids.inject(0.0) { |result, output_id|
         delta  = output_delta[output_id]
         weight = @output_hidden_weight[output_id, hidden_id]
@@ -117,8 +124,11 @@ class ThreeLayerPerceptronNetwork
   end
 
   def update_input_hidden_weight(hidden_delta, input_values, n)
-    input_values.keys.each { |input_id|
-      (1..@hidden_num).each { |hidden_id|
+    input_ids  = input_values.keys
+    hidden_ids = (1..@hidden_num)
+
+    input_ids.each { |input_id|
+      hidden_ids.each { |hidden_id|
         delta  = hidden_delta[hidden_id]
         value  = input_values[input_id]
         change = delta * value
@@ -128,8 +138,11 @@ class ThreeLayerPerceptronNetwork
   end
 
   def update_output_hidden_weight(output_delta, hidden_values, n)
-    (0..@hidden_num).each { |hidden_id|
-      @output_hidden_weight.from_keys.each { |output_id|
+    hidden_ids = (0..@hidden_num)
+    output_ids = output_delta.keys
+
+    hidden_ids.each { |hidden_id|
+      output_ids.each { |output_id|
         delta  = output_delta[output_id]
         value  = hidden_values[hidden_id]
         change = delta * value
@@ -142,17 +155,16 @@ end
 if $0 == __FILE__
   srand(0)
   network = ThreeLayerPerceptronNetwork.new(3)
-  puts "before:"
-  p network.feedforward(1 => 0.0, 2 => 0.0)
-  p network.feedforward(1 => 0.0, 2 => 1.0)
-  p network.feedforward(1 => 1.0, 2 => 0.0)
-  p network.feedforward(1 => 1.0, 2 => 1.0)
 
   puts "train:"
-  p network.backpropagation({1 => 0, 2 => 0}, {1 => 1, 2 => 0})
-  #network.backpropagation({1 => 0, 2 => 1}, {1 => 0, 2 => 1})
-  #network.backpropagation({1 => 1, 2 => 0}, {1 => 0, 2 => 1})
-  #network.backpropagation({1 => 1, 2 => 1}, {1 => 1, 2 => 0})
+  100.times {
+    error = 0.0
+    error += network.backpropagation({1 => 0, 2 => 0}, {1 => 1, 2 => 0})
+    error += network.backpropagation({1 => 0, 2 => 1}, {1 => 0, 2 => 1})
+    error += network.backpropagation({1 => 1, 2 => 0}, {1 => 0, 2 => 1})
+    error += network.backpropagation({1 => 1, 2 => 1}, {1 => 1, 2 => 0})
+    p error
+  }
 
   puts "after:"
   p network.feedforward(1 => 0.0, 2 => 0.0)
