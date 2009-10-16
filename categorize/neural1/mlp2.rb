@@ -6,15 +6,15 @@ class LinkWeight
     @default = proc { rand }
   end
 
-  def get(a, b)
-    @weight[a] ||= {}
-    @weight[a][b] ||= @default[]
-    return @weight[a][b]
+  def get(from, to)
+    @weight[from] ||= {}
+    @weight[from][to] ||= @default[]
+    return @weight[from][to]
   end
 
-  def set(a, b, weight)
-    @weight[a] ||= {}
-    @weight[a][b] = weight
+  def set(from, to, weight)
+    @weight[from] ||= {}
+    @weight[from][to] = weight
     return weight
   end
 end
