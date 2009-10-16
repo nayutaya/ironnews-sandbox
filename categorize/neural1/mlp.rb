@@ -62,7 +62,7 @@ class ThreeLayerPerceptronNetwork
     }
   end
 
-  def backpropagation_out_to_mid(target_values, out_values)
+  def calc_out_delta(target_values, out_values)
     return (1..@out_num).inject({}) { |out_delta, out_key|
       target = target_values[out_key]
       out    = out_values[out_key]
@@ -72,12 +72,12 @@ class ThreeLayerPerceptronNetwork
     }
   end
 
-  def backpropagation_mid_to_in(out_delta, mid_values)
+  def calc_mid_delta(out_delta, mid_values)
     return (0..@mid_num).inject({}) { |mid_delta, mid_key|
       error = (1..@out_num).inject(0.0) { |result, out_key|
-        value  = out_delta[out_key]
+        delta  = out_delta[out_key]
         weight = @mid_out_weight[mid_key][out_key]
-        result + value * weight
+        result + delta * weight
       }
       mid_delta[mid_key] = self.dsigmoid(mid_values[mid_key]) * error
       mid_delta
@@ -117,8 +117,8 @@ class ThreeLayerPerceptronNetwork
     mid_values = mid_values.merge(0 => 1.0)
     out_values = self.feedforward_mid_to_out(mid_values)
 
-    out_delta = self.backpropagation_out_to_mid(target_values, out_values)
-    mid_delta = self.backpropagation_mid_to_in(out_delta, mid_values)
+    out_delta = self.calc_out_delta(target_values, out_values)
+    mid_delta = self.calc_mid_delta(out_delta, mid_values)
 
     n = 0.5 # 学習率
     self.update_in_to_mid(mid_delta, in_values, n)
