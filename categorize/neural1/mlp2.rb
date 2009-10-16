@@ -17,6 +17,15 @@ class LinkWeight
     @weight[from][to] = weight
     return weight
   end
+
+  def [](from, to)
+    return self.get(from, to)
+  end
+
+  def []=(from, to, weight)
+    self.set(from, to, weight)
+    return weight
+  end
 end
 
 # 多層パーセプトロンニューラルネットワーク
@@ -26,9 +35,9 @@ end
 if $0 == __FILE__
   weight = LinkWeight.new
   p weight
-  p weight.get(1,2)
+  p weight[1,2]
   p weight
-  weight.set(3, 4, 1.0)
+  weight[3, 4] = 1.0
   p weight
-  p weight.get(3, 4)
+  p weight[3, 4]
 end
