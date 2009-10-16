@@ -99,8 +99,10 @@ class ThreeLayerPerceptronNetwork
   end
 
   def fire(in_values)
-    mid_values = self.feedforward_in_to_mid(in_values.merge(0 => 1.0))
-    out_values = self.feedforward_mid_to_out(mid_values.merge(0 => 1.0))
+    in_values  = in_values.merge(0 => 1.0)
+    mid_values = self.feedforward_in_to_mid(in_values)
+    mid_values = mid_values.merge(0 => 1.0)
+    out_values = self.feedforward_mid_to_out(mid_values)
     return out_values
   end
 
@@ -109,21 +111,17 @@ class ThreeLayerPerceptronNetwork
   end
 
   # バックプロパゲーションによるトレーニング
-  def train(in_values, ret_values)
-    in_values[0] = 1.0
+  def train(in_values, target_values)
+    in_values  = in_values.merge(0 => 1.0)
+    mid_values = self.feedforward_in_to_mid(in_values)
+    mid_values = mid_values.merge(0 => 1.0)
+    out_values = self.feedforward_mid_to_out(mid_values)
 
-    mid = self.feedforward_in_to_mid(in_values)
-    mid[0] = 1.0
-
-    out = self.feedforward_mid_to_out(mid)
-
-    out_delta = self.backpropagation_out_to_mid(ret_values, out)
-
-    mid_delta = self.backpropagation_mid_to_in(out_delta, mid)
+    out_delta = self.backpropagation_out_to_mid(target_values, out_values)
+    mid_delta = self.backpropagation_mid_to_in(out_delta, mid_values)
 
     n = 0.5 # 学習率
-
-    self.update_mid_to_out(out_delta, mid, n)
+    self.update_mid_to_out(out_delta, mid_values, n)
     self.update_in_to_mid(mid_delta, in_values, n)
 
     return out_delta.values.inject(0.0) { |sum, val| sum + val * val }
