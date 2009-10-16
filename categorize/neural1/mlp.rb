@@ -59,6 +59,45 @@ class ThreeLayerPerceptronNetwork
     return out
   end
 
+  def backpropagation_out_to_mid(ret_values, out)
+    out_delta = {}
+    (1..@out_num).each { |out_key|
+      error = ret_values[out_key] - out[out_key]
+      out_delta[out_key] = self.dtanh(out[out_key]) * error
+    }
+    return out_delta
+  end
+
+  def backpropagation_mid_to_in(out_delta, mid)
+    mid_delta = {}
+    (0..@mid_num).each { |mid_key|
+      error = 0.0
+      (1..@out_num).each { |out_key|
+        error += out_delta[out_key] * @mid_out[mid_key][out_key]
+      }
+      mid_delta[mid_key] = self.dtanh(mid[mid_key]) * error
+    }
+    return mid_delta
+  end
+
+  def update_mid_to_out(out_delta, mid, n)
+    (0..@mid_num).each { |mid_key|
+      (1..@out_num).each { |out_key|
+        change = out_delta[out_key] * mid[mid_key]
+        @mid_out[mid_key][out_key] += n * change
+      }
+    }
+  end
+
+  def update_in_to_mid(mid_delta, in_values, n)
+    (0..@in_num).each { |in_key|
+      (0..@mid_num).each { |mid_key|
+        change = mid_delta[mid_key] * in_values[in_key]
+        @in_mid[in_key][mid_key] += n * change
+      }
+    }
+  end
+
   def fire(in_values)
     mid_values = self.feedforward_in_to_mid(in_values.merge(0 => 1.0))
     out_values = self.feedforward_mid_to_out(mid_values.merge(0 => 1.0))
@@ -78,38 +117,14 @@ class ThreeLayerPerceptronNetwork
 
     out = self.feedforward_mid_to_out(mid)
 
-    out_delta = {}
-    (1..@out_num).each { |out_key|
-      error = ret_values[out_key] - out[out_key]
-      out_delta[out_key] = self.dtanh(out[out_key]) * error
-    }
-    #p out_delta
+    out_delta = self.backpropagation_out_to_mid(ret_values, out)
 
-    mid_delta = {}
-    (0..@mid_num).each { |mid_key|
-      error = 0.0
-      (1..@out_num).each { |out_key|
-        error += out_delta[out_key] * @mid_out[mid_key][out_key]
-      }
-      mid_delta[mid_key] = self.dtanh(mid[mid_key]) * error
-    }
-    #p mid_delta
+    mid_delta = self.backpropagation_mid_to_in(out_delta, mid)
 
     n = 0.5 # 学習率
 
-    (0..@mid_num).each { |mid_key|
-      (1..@out_num).each { |out_key|
-        change = out_delta[out_key] * mid[mid_key]
-        @mid_out[mid_key][out_key] += n * change
-      }
-    }
-
-    (0..@in_num).each { |in_key|
-      (0..@mid_num).each { |mid_key|
-        change = mid_delta[mid_key] * in_values[in_key]
-        @in_mid[in_key][mid_key] += n * change
-      }
-    }
+    self.update_mid_to_out(out_delta, mid, n)
+    self.update_in_to_mid(mid_delta, in_values, n)
 
     return out_delta.values.inject(0.0) { |sum, val| sum + val * val }
   end
