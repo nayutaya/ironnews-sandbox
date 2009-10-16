@@ -2,7 +2,7 @@
 
 # 多層パーセプトロンニューラルネットワーク
 # 入力層-中間層-出力層
-# バイアスなし
+# バイアスあり
 # 初期値ランダム
 class ThreeLayerPerceptronNetwork
   def initialize(in_num, mid_num, out_num)
@@ -10,22 +10,22 @@ class ThreeLayerPerceptronNetwork
     @mid_num = mid_num
     @out_num = out_num
 
-    @in_mid  = {}
-    @mid_out = {}
+    @in_mid_weight  = {}
+    @mid_out_weight = {}
   end
 
   def setup
     (0..@in_num).each { |in_key|
       (0..@mid_num).each { |mid_key|
-        @in_mid[in_key] ||= {}
-        @in_mid[in_key][mid_key] = rand
+        @in_mid_weight[in_key] ||= {}
+        @in_mid_weight[in_key][mid_key] = rand
       }
     }
 
     (0..@mid_num).each { |mid_key|
       (1..@out_num).each { |out_key|
-        @mid_out[mid_key] ||= {}
-        @mid_out[mid_key][out_key] = rand
+        @mid_out_weight[mid_key] ||= {}
+        @mid_out_weight[mid_key][out_key] = rand
       }
     }
   end
@@ -41,8 +41,8 @@ class ThreeLayerPerceptronNetwork
   def feedforward_in_to_mid(in_values)
     return (1..@mid_num).inject({}) { |mid_values, mid_key|
       sum = in_values.inject(0.0) { |result, (in_key, in_value)|
-        weight = @in_mid[in_key][mid_key]
         value  = in_value
+        weight = @in_mid_weight[in_key][mid_key]
         result + value * weight
       }
       mid_values[mid_key] = self.sigmoid(sum)
@@ -53,8 +53,8 @@ class ThreeLayerPerceptronNetwork
   def feedforward_mid_to_out(mid_values)
     return (1..@out_num).inject({}) { |out_values, out_key|
       sum = (0..@mid_num).inject(0.0) { |result, mid_key|
-        weight = @mid_out[mid_key][out_key]
         value  = mid_values[mid_key]
+        weight = @mid_out_weight[mid_key][out_key]
         result + value * weight
       }
       out_values[out_key] = self.sigmoid(sum)
@@ -64,8 +64,10 @@ class ThreeLayerPerceptronNetwork
 
   def backpropagation_out_to_mid(target_values, out_values)
     return (1..@out_num).inject({}) { |out_delta, out_key|
-      error = target_values[out_key] - out_values[out_key]
-      out_delta[out_key] = self.dsigmoid(out_values[out_key]) * error
+      target = target_values[out_key]
+      out    = out_values[out_key]
+      error  = target - out
+      out_delta[out_key] = self.dsigmoid(out) * error
       out_delta
     }
   end
@@ -73,7 +75,9 @@ class ThreeLayerPerceptronNetwork
   def backpropagation_mid_to_in(out_delta, mid_values)
     return (0..@mid_num).inject({}) { |mid_delta, mid_key|
       error = (1..@out_num).inject(0.0) { |result, out_key|
-        result + out_delta[out_key] * @mid_out[mid_key][out_key]
+        value  = out_delta[out_key]
+        weight = @mid_out_weight[mid_key][out_key]
+        result + value * weight
       }
       mid_delta[mid_key] = self.dsigmoid(mid_values[mid_key]) * error
       mid_delta
@@ -82,9 +86,9 @@ class ThreeLayerPerceptronNetwork
 
   def update_in_to_mid(mid_delta, in_values, n)
     (0..@in_num).each { |in_key|
-      (0..@mid_num).each { |mid_key|
+      (1..@mid_num).each { |mid_key|
         change = mid_delta[mid_key] * in_values[in_key]
-        @in_mid[in_key][mid_key] += n * change
+        @in_mid_weight[in_key][mid_key] += n * change
       }
     }
   end
@@ -93,12 +97,12 @@ class ThreeLayerPerceptronNetwork
     (0..@mid_num).each { |mid_key|
       (1..@out_num).each { |out_key|
         change = out_delta[out_key] * mid_values[mid_key]
-        @mid_out[mid_key][out_key] += n * change
+        @mid_out_weight[mid_key][out_key] += n * change
       }
     }
   end
 
-  def fire(in_values)
+  def feedforward(in_values)
     in_values  = in_values.merge(0 => 1.0)
     mid_values = self.feedforward_in_to_mid(in_values)
     mid_values = mid_values.merge(0 => 1.0)
@@ -135,21 +139,23 @@ p network
 # XORを学習させる
 
 puts "before"
-p network.fire(1 => 0, 2 => 0)
-p network.fire(1 => 0, 2 => 1)
-p network.fire(1 => 1, 2 => 0)
-p network.fire(1 => 1, 2 => 1)
+p network.feedforward(1 => 0, 2 => 0)
+p network.feedforward(1 => 0, 2 => 1)
+p network.feedforward(1 => 1, 2 => 0)
+p network.feedforward(1 => 1, 2 => 1)
 
 puts "train"
 100.times {
-  p network.train({1 => 0, 2 => 0}, {1 => 1, 2 => 0})
-  p network.train({1 => 0, 2 => 1}, {1 => 0, 2 => 1})
-  p network.train({1 => 1, 2 => 0}, {1 => 0, 2 => 1})
-  p network.train({1 => 1, 2 => 1}, {1 => 1, 2 => 0})
+  x = 0.0
+  x += network.train({1 => 0, 2 => 0}, {1 => 1, 2 => 0})
+  x += network.train({1 => 0, 2 => 1}, {1 => 0, 2 => 1})
+  x += network.train({1 => 1, 2 => 0}, {1 => 0, 2 => 1})
+  x += network.train({1 => 1, 2 => 1}, {1 => 1, 2 => 0})
+  p x
 }
 
 puts "after"
-p network.fire(1 => 0, 2 => 0)
-p network.fire(1 => 0, 2 => 1)
-p network.fire(1 => 1, 2 => 0)
-p network.fire(1 => 1, 2 => 1)
+p network.feedforward(1 => 0, 2 => 0)
+p network.feedforward(1 => 0, 2 => 1)
+p network.feedforward(1 => 1, 2 => 0)
+p network.feedforward(1 => 1, 2 => 1)
