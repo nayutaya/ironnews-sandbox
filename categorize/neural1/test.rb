@@ -19,16 +19,25 @@ tokenizer = BigramTokenizer.new
 input_dict  = Dictionary.new
 output_dict = Dictionary.new
 
-network = ThreeLayerPerceptronNetwork.new(3)
+network = ThreeLayerPerceptronNetwork.new(10)
+
+puts "init..."
+
+training_data = []
+training_titles.each { |category, title|
+  tokens = tokenizer.tokenize(title)
+  input_ids = input_dict.encode_multiple(tokens)
+  output_id = output_dict.encode(category)
+  input_values  = input_ids.inject({}) { |memo, id| memo[id] = 1.0; memo }
+  output_values = {1 => 0.0, 2 => 0.0}.merge(output_id => 1.0)
+  training_data << [input_values, output_values]
+}
 
 puts "training..."
-10.times {
-  training_titles.each { |category, title|
-    tokens = tokenizer.tokenize(title)
-    input_ids = input_dict.encode_multiple(tokens)
-    output_id = output_dict.encode(category)
-    input_values  = input_ids.inject({}) { |memo, id| memo[id] = 1; memo }
-    output_values = {output_id => 1}
+
+10.times { |i|
+  p i
+  training_data.each { |input_values, output_values|
     network.backpropagation(input_values, output_values)
   }
 }
@@ -38,7 +47,7 @@ File.open("out.rail", "wb") { |file|
   rail_titles2.each { |title|
     tokens = tokenizer.tokenize(title)
     input_ids = input_dict.encode_multiple(tokens)
-    input_values = input_ids.inject({}) { |memo, id| memo[id] = 1; memo }
+    input_values = input_ids.inject({}) { |memo, id| memo[id] = 1.0; memo }
     results = network.feedforward(input_values)
     file.puts([results, title].inspect)
   }
@@ -49,7 +58,7 @@ File.open("out.rest", "wb") { |file|
   rest_titles2.each { |title|
     tokens = tokenizer.tokenize(title)
     input_ids = input_dict.encode_multiple(tokens)
-    input_values = input_ids.inject({}) { |memo, id| memo[id] = 1; memo }
+    input_values = input_ids.inject({}) { |memo, id| memo[id] = 1.0; memo }
     results = network.feedforward(input_values)
     file.puts([results, title].inspect)
   }
