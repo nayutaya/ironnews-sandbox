@@ -30,29 +30,41 @@ class ThreeLayerPerceptronNetwork
     }
   end
 
-  def fire(values)
-    values[0] = 1.0
+  def feedforward_in_mid(in_values)
+    in_values = in_values.merge(0 => 1.0)
 
     mid = {0 => 1.0}
     (1..@mid_num).each { |mid_key|
       sum = 0.0
-      values.each { |in_key, in_value|
+      in_values.each { |in_key, in_value|
         weight = @in_mid[in_key][mid_key]
         sum += in_value * weight
       }
       mid[mid_key] = Math.tanh(sum)
     }
 
+    return mid
+  end
+
+  def feedforward_mid_out(mid_values)
     out = {}
     (1..@out_num).each { |out_key|
       sum = 0.0
       (0..@mid_num).each { |mid_key|
         weight = @mid_out[mid_key][out_key]
-        value  = mid[mid_key]
+        value  = mid_values[mid_key]
         sum += value * weight
       }
       out[out_key] = Math.tanh(sum)
     }
+
+    return out
+  end
+
+  def fire(values)
+
+    mid = self.feedforward_in_mid(values)
+    out = self.feedforward_mid_out(mid)
 
     return out
   end
