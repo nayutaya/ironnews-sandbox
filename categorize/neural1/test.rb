@@ -4,10 +4,10 @@ require "tokenizer"
 require "dictionary"
 require "mlp2"
 
-rail_titles1 = File.open("title_rail400a.txt") { |file| file.map { |line| line.chomp } }
-rail_titles2 = File.open("title_rail400b.txt") { |file| file.map { |line| line.chomp } }
-rest_titles1 = File.open("title_rest400a.txt") { |file| file.map { |line| line.chomp } }
-rest_titles2 = File.open("title_rest400b.txt") { |file| file.map { |line| line.chomp } }
+rail_titles1 = File.open("../sample_rail_500_a.txt") { |file| file.map { |line| line.chomp } }
+rail_titles2 = File.open("../sample_rail_500_b.txt") { |file| file.map { |line| line.chomp } }
+rest_titles1 = File.open("../sample_rest_500_a.txt") { |file| file.map { |line| line.chomp } }
+rest_titles2 = File.open("../sample_rest_500_b.txt") { |file| file.map { |line| line.chomp } }
 
 training_titles = []
 training_titles += rail_titles1.map { |title| ["rail", title] }
