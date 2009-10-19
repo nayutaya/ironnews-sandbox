@@ -1,5 +1,7 @@
 #! ruby -Ku
 
+$: << File.join(File.dirname(__FILE__), "..")
+
 require "tokenizer"
 require "classifier"
 
