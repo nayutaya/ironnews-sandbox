@@ -10,6 +10,18 @@ class BayesianClassifier
     @quantities = {}
   end
 
+  def to_hash
+    return {
+      :features   => @features,
+      :quantities => @quantities,
+    }
+  end
+
+  def from_hash(hash)
+    @features   = hash[:features]
+    @quantities = hash[:quantities]
+  end
+
   def train(category, features)
     features.each { |feature|
       @features[feature] ||= {}
