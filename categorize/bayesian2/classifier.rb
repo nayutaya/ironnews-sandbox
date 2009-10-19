@@ -3,8 +3,7 @@
 # 単純ベイズ分類器
 
 class BayesianClassifier
-  def initialize(tokenizer)
-    @tokenizer  = tokenizer
+  def initialize
     # {"feature1" => {"categoryA" => 0, "categoryB" => 1}}
     @features   = Hash.new { |hash, key|
       hash[key] = Hash.new(0)
@@ -13,8 +12,7 @@ class BayesianClassifier
     @quantities = Hash.new(0)
   end
 
-  def add(category, document)
-    features = @tokenizer.tokenize(document)
+  def train(category, features)
     features.each { |feature|
       @features[feature][category] += 1
     }
@@ -69,8 +67,7 @@ class BayesianClassifier
     return docprob * catprob
   end
 
-  def classifier(document, thresholds = Hash.new(1.0))
-    features = @tokenizer.tokenize(document)
+  def classify(features, thresholds = Hash.new(1.0))
     probs = self.categories.
       map { |category| [category, self.prob(features, category)] }.
       sort_by { |category, prob| prob }

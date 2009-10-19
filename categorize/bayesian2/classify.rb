@@ -6,13 +6,13 @@ require "tokenizer"
 require "classifier"
 
 tokenizer  = BigramTokenizer.new
-classifier = BayesianClassifier.new(tokenizer)
+classifier = BayesianClassifier.new
 
 rail_titles = File.open("../data/rail.txt") { |file| file.map { |line| line.chomp } }
 rest_titles = File.open("../data/rest.txt") { |file| file.map { |line| line.chomp } }
 
-rail_titles.each { |title| classifier.add("rail", title) }
-rest_titles.each { |title| classifier.add("rest", title) }
+rail_titles.each { |title| classifier.train("rail", tokenizer.tokenize(title)) }
+rest_titles.each { |title| classifier.train("rest", tokenizer.tokenize(title)) }
 
 thresholds = {"rail" => 1.0, "rest" => 3.5}
 
@@ -22,7 +22,7 @@ results = Hash.new { |hash, key|
 
 STDIN.each { |title|
   title.chomp!
-  category = classifier.classifier(title, thresholds) || "unknown"
+  category = classifier.classify(tokenizer.tokenize(title), thresholds) || "unknown"
   results[category] << title
 }
 
