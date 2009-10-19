@@ -17,6 +17,12 @@ input_filename = ARGV[2]
 tokenizer  = BigramTokenizer.new
 classifier = BayesianClassifier.new
 
+if File.exist?(db_filename)
+  bin  = File.open(db_filename, "rb") { |file| file.read }
+  hash = Marshal.load(bin)
+  classifier.from_hash(hash)
+end
+
 File.open(input_filename) { |file|
   file.each { |line|
     tokens = tokenizer.tokenize(line.chomp)
@@ -24,6 +30,6 @@ File.open(input_filename) { |file|
   }
 }
 
-File.open(db_filename, "wb") { |file|
-  file.write(classifier.to_hash.inspect)
-}
+hash = classifier.to_hash
+bin  = Marshal.dump(hash)
+File.open(db_filename, "wb") { |file| file.write(bin) }
