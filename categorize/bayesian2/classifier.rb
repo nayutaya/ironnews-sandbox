@@ -5,29 +5,30 @@
 class BayesianClassifier
   def initialize
     # {"feature1" => {"categoryA" => 0, "categoryB" => 1}}
-    @features   = Hash.new { |hash, key|
-      hash[key] = Hash.new(0)
-    }
+    @features   = {}
     # {"categoryA" => 100, "categoryB" => 200}
-    @quantities = Hash.new(0)
+    @quantities = {}
   end
 
   def train(category, features)
     features.each { |feature|
+      @features[feature] ||= {}
+      @features[feature][category] ||= 0
       @features[feature][category] += 1
     }
+    @quantities[category] ||= 0
     @quantities[category] += 1
     return self
   end
 
   # あるカテゴリの中に、ある特徴が現れた数
   def fcount(feature, category)
-    return @features[feature][category]
+    return ((@features[feature] || {})[category] || 0)
   end
 
   # あるカテゴリの中のドキュメント数
   def catcount(category)
-    return @quantities[category]
+    return (@quantities[category] || 0)
   end
 
   # ドキュメントの総数
