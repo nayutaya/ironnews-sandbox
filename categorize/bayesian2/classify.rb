@@ -6,8 +6,8 @@ require "classifier"
 tokenizer  = BigramTokenizer.new
 classifier = BayesianClassifier.new(tokenizer)
 
-rail_titles = File.open("../data/title_rail.txt")    { |file| file.map { |line| line.chomp } }
-rest_titles = File.open("../data/title_nonrail.txt") { |file| file.map { |line| line.chomp } }
+rail_titles = File.open("../data/rail.txt") { |file| file.map { |line| line.chomp } }
+rest_titles = File.open("../data/rest.txt") { |file| file.map { |line| line.chomp } }
 
 rail_titles.each { |title| classifier.add("rail", title) }
 rest_titles.each { |title| classifier.add("rest", title) }
