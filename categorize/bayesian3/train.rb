@@ -2,7 +2,7 @@
 
 # 単純ベイズ分類器によるカテゴリ分類を学習する
 
-require "naive_bayes_category_classifier"
+require "naive_bayes_categorizer"
 
 tokenizer  = BigramTokenizer.new
 classifier = NaiveBayesCategoryClassifier.new(tokenizer)
