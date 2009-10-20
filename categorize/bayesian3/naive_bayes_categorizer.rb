@@ -37,20 +37,22 @@ class NaiveBayesCategorizer
     File.open(filepath, "wb") { |file| file.write(bin) }
   end
 
-  def train(category, features)
+  def train(category, document)
+    features    = @tokenizer.tokenize(document)
     category_id = @category_dictionary.encode(category)
     feature_ids = @feature_dictionary.encode_multiple(features)
     @classifier.train(category_id, feature_ids)
   end
 
-  def classify(features)
+  def classify(document)
+    features    = @tokenizer.tokenize(document)
     feature_ids = @feature_dictionary.encode_multiple(features)
     probs = @classifier.classify(feature_ids)
     return @category_dictionary.decode_multiple(probs)
   end
 
-  def categorize(features, thresholds = {})
-    probs = self.classify(features).
+  def categorize(document, thresholds = {})
+    probs = self.classify(document).
       map     { |category, prob| [category, prob] }.
       sort_by { |category, prob| prob }
 

@@ -4,23 +4,28 @@
 
 require "naive_bayes_categorizer"
 
-tokenizer   = BigramTokenizer.new
-categorizer = NaiveBayesCategorizer.new(tokenizer)
+unless ARGV.size == 3
+  STDERR.puts("Usage:")
+  STDERR.puts("  ruby train.rb db category input")
+  exit(1)
+end
 
+db_filename    = ARGV[0]
+category_name  = ARGV[1]
+input_filename = ARGV[2]
 
-categorizer.train("A", %w[a b c d e])
-categorizer.train("B", %w[a b f g h])
+tokenizer = BigramTokenizer.new
 
-p categorizer.categorize(%w[a b])
-p categorizer.categorize(%w[a b c])
-p categorizer.categorize(%w[a b f])
+if File.exist?(db_filename)
+  categorizer = NaiveBayesCategorizer.load(tokenizer, db_filename)
+else
+  categorizer = NaiveBayesCategorizer.new(tokenizer)
+end
 
-=begin
-p classifier
-h = classifier.to_hash
-p h
-p classifier2.to_hash
-classifier2.save("out.db")
-classifier3 = NaiveBayesCategoryClassifier.load(tokenizer, "out.db")
-p classifier3.to_hash
-=end
+File.open(input_filename) { |file|
+  file.each { |line|
+    categorizer.train(category_name, line.chomp)
+  }
+}
+
+categorizer.save(db_filename)
