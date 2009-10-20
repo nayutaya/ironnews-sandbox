@@ -10,11 +10,12 @@ class NaiveBayesCategoryClassifier
   def initialize(tokenizer, hash = {})
     @tokenizer = tokenizer
 
-    @input_dictionary  = Dictionary.new(hash[:input_dictionary]  || {})
-    @output_dictionary = Dictionary.new(hash[:output_dictionary] || {})
+    @category_dictionary = Dictionary.new(hash[:category_dictionary] || {})
+    @feature_dictionary  = Dictionary.new(hash[:feature_dictionary] || {})
+    @classifier          = NaiveBayesClassifier.new(hash[:classifier] || {})
   end
 
-  attr_reader :input_dictionary, :output_dictionary
+  attr_reader :category_dictionary, :feature_dictionary
 
   def self.load(tokenizer, filepath)
     bin  = File.open(filepath, "rb") { |file| file.read }
@@ -24,8 +25,9 @@ class NaiveBayesCategoryClassifier
 
   def to_hash
     return {
-      :input_dictionary  => @input_dictionary.to_hash,
-      :output_dictionary => @output_dictionary.to_hash,
+      :category_dictionary => @category_dictionary.to_hash,
+      :feature_dictionary  => @feature_dictionary.to_hash,
+      :classifier          => @classifier.to_hash,
     }
   end
 
@@ -33,5 +35,16 @@ class NaiveBayesCategoryClassifier
     hash = self.to_hash
     bin  = Marshal.dump(hash)
     File.open(filepath, "wb") { |file| file.write(bin) }
+  end
+
+  def train(category, features)
+    category_id = @category_dictionary.encode(category)
+    feature_ids = @feature_dictionary.encode_multiple(features)
+    @classifier.train(category_id, feature_ids)
+  end
+
+  def classify(features, thresholds = {})
+    feature_ids = @feature_dictionary.encode_multiple(features)
+    return @classifier.classify(feature_ids)
   end
 end
