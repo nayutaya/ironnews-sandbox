@@ -1,9 +1,19 @@
 #! ruby -Ku
 
+# オブジェクトとID（1～）を相互に変換する辞書
+
 class Dictionary
-  def initialize
+  def initialize(hash = {})
     @obj2id = {}
     @id2obj = {}
+    hash.each { |obj, id|
+      @obj2id[obj] = id
+      @id2obj[id]  = obj
+    }
+  end
+
+  def to_hash
+    return @obj2id.dup
   end
 
   def encode(obj)
