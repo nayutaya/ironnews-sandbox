@@ -4,13 +4,20 @@
 
 require "naive_bayes_category_classifier"
 
-dict = Dictionary.new
-p dict.encode("a")
-p dict.encode("b")
-p dict
+tokenizer  = BigramTokenizer.new
+classifier = NaiveBayesCategoryClassifier.new(tokenizer)
+classifier.input_dictionary.encode("A")
+classifier.output_dictionary.encode("B")
 
-h = dict.to_hash
+p classifier
+
+h = classifier.to_hash
 p h
 
-dict2 = Dictionary.new(h)
-p dict2
+classifier2 = NaiveBayesCategoryClassifier.new(tokenizer, h)
+p classifier2.to_hash
+
+classifier2.save("out.db")
+
+classifier3 = NaiveBayesCategoryClassifier.load(tokenizer, "out.db")
+p classifier3.to_hash
