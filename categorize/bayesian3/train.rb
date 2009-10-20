@@ -4,14 +4,16 @@
 
 require "naive_bayes_categorizer"
 
-tokenizer  = BigramTokenizer.new
-classifier = NaiveBayesCategoryClassifier.new(tokenizer)
+tokenizer   = BigramTokenizer.new
+categorizer = NaiveBayesCategorizer.new(tokenizer)
 
 
-classifier.train("A", %w[a b c d e])
-classifier.train("B", %w[a b f g h])
+categorizer.train("A", %w[a b c d e])
+categorizer.train("B", %w[a b f g h])
 
-p classifier.classify(%w[a b f])
+p categorizer.categorize(%w[a b])
+p categorizer.categorize(%w[a b c])
+p categorizer.categorize(%w[a b f])
 
 =begin
 p classifier
