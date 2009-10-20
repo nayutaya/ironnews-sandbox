@@ -1,12 +1,15 @@
 #! ruby -Ku
 
+# 単純ベイズ分類器の学習を行う
+
 $: << File.join(File.dirname(__FILE__), "..")
 
 require "tokenizer"
 require "classifier"
 
 unless ARGV.size == 3
-  STDERR.puts("usage: train db category input")
+  STDERR.puts("Usage:")
+  STDERR.puts("  ruby train.rb db category input")
   exit(1)
 end
 
