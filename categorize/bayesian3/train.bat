@@ -1,4 +1,5 @@
 
-del out.db
-ruby train.rb out.db rail ..\data\rail.txt
-ruby train.rb out.db rest ..\data\rest.txt
+set DBNAME=out.full.db
+del %DBNAME%
+ruby train.rb %DBNAME% rail < ..\data\rail.txt
+ruby train.rb %DBNAME% rest < ..\data\rest.txt
