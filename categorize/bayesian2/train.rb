@@ -17,14 +17,14 @@ db_filename    = ARGV[0]
 category_name  = ARGV[1]
 input_filename = ARGV[2]
 
-tokenizer  = BigramTokenizer.new
-classifier = BayesianClassifier.new
-
+hash = {}
 if File.exist?(db_filename)
   bin  = File.open(db_filename, "rb") { |file| file.read }
   hash = Marshal.load(bin)
-  classifier.from_hash(hash)
 end
+
+tokenizer  = BigramTokenizer.new
+classifier = BayesianClassifier.new(hash)
 
 File.open(input_filename) { |file|
   file.each { |line|

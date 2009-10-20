@@ -3,11 +3,11 @@
 # 単純ベイズ分類器
 
 class BayesianClassifier
-  def initialize
+  def initialize(params = {})
     # {"feature1" => {"categoryA" => 0, "categoryB" => 1}}
-    @features   = {}
+    @features   = params[:features]   || {}
     # {"categoryA" => 100, "categoryB" => 200}
-    @quantities = {}
+    @quantities = params[:quantities] || {}
   end
 
   def to_hash
@@ -15,11 +15,6 @@ class BayesianClassifier
       :features   => @features,
       :quantities => @quantities,
     }
-  end
-
-  def from_hash(hash)
-    @features   = hash[:features]
-    @quantities = hash[:quantities]
   end
 
   def train(category, features)
