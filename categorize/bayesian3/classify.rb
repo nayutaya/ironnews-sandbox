@@ -4,14 +4,18 @@
 
 require "naive_bayes_categorizer"
 
-unless ARGV.size == 2
+unless ARGV.size >= 2 && (ARGV.size - 2) % 2 == 0
   STDERR.puts("Usage:")
-  STDERR.puts("  ruby #{$0} db input")
+  STDERR.puts("  ruby #{$0} db input (category threshold)...")
   exit(1)
 end
 
-db_filename    = ARGV[0]
-input_filename = ARGV[1]
+db_filename    = ARGV.shift
+input_filename = ARGV.shift
+thresholds = ARGV.enum_slice(2).inject({}) { |memo, (category, threshold)|
+  memo[category] = threshold.to_f
+  memo
+}
 
 STDERR.puts("loading...")
 tokenizer   = BigramTokenizer.new
@@ -20,9 +24,6 @@ categorizer = NaiveBayesCategorizer.load(tokenizer, db_filename)
 results = Hash.new { |hash, key|
   hash[key] = []
 }
-
-# TODO: 閾値をオプションで指定する
-thresholds = {"rail" => 1.0, "rest" => 3.5}
 
 STDERR.puts("categorizing...")
 File.open(input_filename) { |file|
