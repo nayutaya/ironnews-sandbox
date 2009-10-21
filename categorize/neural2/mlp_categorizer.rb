@@ -53,20 +53,31 @@ class MlpCategorizer
     @classifier.backpropagation(input_values, target_values)
   end
 
-=begin
+  def feedforward(document)
+    features    = @tokenizer.tokenize(document)
+    feature_ids = @feature_dictionary.encode_multiple(features)
+
+    input_values = feature_ids.inject({}) { |memo, feature_id|
+      memo[feature_id] = 1.0
+      memo
+    }
+    output_values = @classifier.feedforward(input_values)
+    category_values = @category_dictionary.decode_multiple(output_values)
+    return category_values
+  end
+
   def categorize(document, thresholds = {})
-    probs = self.classify(document).
+    probs = self.feedforward(document).
       map     { |category, prob| [category, prob] }.
       sort_by { |category, prob| prob }
 
     first_category,  first_prob  = probs[-1]
     second_category, second_prob = probs[-2]
 
-    if first_prob > second_prob * (thresholds[first_category] || 1.0)
+    if first_prob > second_prob + (thresholds[first_category] || 0.0)
       return first_category
     else
       return nil
     end
   end
-=end
 end

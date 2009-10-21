@@ -11,6 +11,7 @@ unless ARGV.size >= 1 && (ARGV.size - 1) % 2 == 0
 end
 
 db_filename = ARGV.shift
+count       = 5
 input_files = ARGV.enum_slice(2).inject({}) { |memo, (category, filepath)|
   memo[category] = filepath
   memo
@@ -38,8 +39,11 @@ srand(0)
 training_data = training_data.sort_by { rand }
 
 STDERR.puts("training...")
-training_data.each { |category, line|
-  categorizer.train(category, line)
+count.times { |i|
+  STDERR.printf("%i/%i\n", i + 1, count)
+  training_data.each { |category, line|
+    categorizer.train(category, line)
+  }
 }
 
 STDERR.puts("saving...")
