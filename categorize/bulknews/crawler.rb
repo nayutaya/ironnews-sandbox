@@ -6,7 +6,7 @@ require "nkf"
 require "rubygems"
 require "nokogiri"
 
-start_date = Date.new(2008, 8, 1)
+start_date = Date.new(2008, 6, 1)
 end_date   = (start_date >> 1) - 1
 
 (start_date..end_date).each { |date|
