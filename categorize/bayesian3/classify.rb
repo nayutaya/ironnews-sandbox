@@ -2,6 +2,7 @@
 
 # 単純ベイズ分類器によるカテゴリ分類を行う
 
+$: << File.dirname(__FILE__)
 require "naive_bayes_categorizer"
 
 unless ARGV.size >= 1 && (ARGV.size - 1) % 2 == 0

@@ -2,6 +2,7 @@
 
 # 多層パーセプトロンネットワークによるカテゴリ分類を行う
 
+$: << File.dirname(__FILE__)
 require "mlp_categorizer"
 
 unless ARGV.size >= 1 && (ARGV.size - 1) % 2 == 0
