@@ -12,7 +12,7 @@ class MlpCategorizer
 
     @category_dictionary = Dictionary.new(hash[:category_dictionary] || {})
     @feature_dictionary  = Dictionary.new(hash[:feature_dictionary] || {})
-#    @classifier          = NaiveBayesClassifier.new(hash[:classifier] || {})
+    @classifier          = MlpClassifier.new(hash[:classifier] || {:hidden_num => 10})
   end
 
   def self.load(tokenizer, filepath)
@@ -25,7 +25,7 @@ class MlpCategorizer
     return {
       :category_dictionary => @category_dictionary.to_hash,
       :feature_dictionary  => @feature_dictionary.to_hash,
-#      :classifier          => @classifier.to_hash,
+      :classifier          => @classifier.to_hash,
     }
   end
 
@@ -39,7 +39,18 @@ class MlpCategorizer
     features    = @tokenizer.tokenize(document)
     category_id = @category_dictionary.encode(category)
     feature_ids = @feature_dictionary.encode_multiple(features)
-    #@classifier.train(category_id, feature_ids)
+
+    input_values = feature_ids.inject({}) { |memo, feature_id|
+      memo[feature_id] = 1.0
+      memo
+    }
+    target_values = @category_dictionary.ids.inject({}) { |memo, id|
+      memo[id] = 0.0
+      memo
+    }
+    target_values[category_id] = 1.0
+
+    @classifier.backpropagation(input_values, target_values)
   end
 
 =begin

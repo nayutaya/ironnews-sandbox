@@ -59,4 +59,8 @@ class Dictionary
     else raise(ArgumentError)
     end
   end
+
+  def ids
+    return @id2obj.keys
+  end
 end
