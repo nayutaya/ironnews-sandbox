@@ -2,6 +2,8 @@
 
 # 多層パーセプトロンネットワークによる学習を行う
 
+require "mlp_categorizer"
+
 unless ARGV.size >= 1 && (ARGV.size - 1) % 2 == 0
   STDERR.puts("Usage:")
   STDERR.puts("  ruby #{$0} database [category1 file1 [category2 file2]]...")
@@ -15,14 +17,12 @@ input_files = ARGV.enum_slice(2).inject({}) { |memo, (category, filepath)|
 }
 
 STDERR.puts("loading...")
-=begin
 tokenizer = BigramTokenizer.new
 if File.exist?(db_filename)
-  categorizer = NaiveBayesCategorizer.load(tokenizer, db_filename)
+  categorizer = MlpCategorizer.load(tokenizer, db_filename)
 else
-  categorizer = NaiveBayesCategorizer.new(tokenizer)
+  categorizer = MlpCategorizer.new(tokenizer)
 end
-=end
 
 STDERR.puts("shuffling...")
 training_data = []
@@ -38,13 +38,9 @@ srand(0)
 training_data = training_data.sort_by { rand }
 
 STDERR.puts("training...")
-=begin
 training_data.each { |category, line|
   categorizer.train(category, line)
 }
-=end
 
 STDERR.puts("saving...")
-=begin
 categorizer.save(db_filename)
-=end
