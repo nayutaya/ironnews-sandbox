@@ -1,6 +1,6 @@
 
 set DBNAME=crosstest1.db
-set THRESHOLDS=rail 0.1 rest 0.5
+set THRESHOLDS=rail 0.1 rest 0.3
 
 del %DBNAME%
 
