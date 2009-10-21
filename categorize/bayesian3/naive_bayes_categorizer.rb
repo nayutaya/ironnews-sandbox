@@ -4,7 +4,7 @@
 $: << File.join(File.dirname(__FILE__), "..")
 require "naive_bayes_classifier"
 require "dictionary"
-require "tokenizer"
+require "bigram_tokenizer"
 
 class NaiveBayesCategorizer
   def initialize(tokenizer, hash = {})
