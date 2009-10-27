@@ -1,0 +1,9 @@
+config/database.yml
+db/*.sqlite3
+db/schema.rb
+log/*.log
+nbproject/
+tmp/cache/
+tmp/pids/
+tmp/sessions/
+tmp/sockets/
