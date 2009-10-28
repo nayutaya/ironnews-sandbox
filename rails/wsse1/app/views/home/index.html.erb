@@ -3,3 +3,11 @@
  <li><%= link_to(h("ログイン"), :action => "login") %></li>
  <li><%= link_to(h("ログアウト"), :action => "logout") %></li>
 </ul>
+
+<% form_tag({:controller => "api", :action => "go"}, :method => "get") { %>
+ <%= submit_tag("GETメソッド") %>
+<% } %>
+
+<% form_tag({:controller => "api", :action => "go"}, :method => "post") { %>
+ <%= submit_tag("POSTメソッド") %>
+<% } %>
