@@ -5,6 +5,9 @@
   <title>wsse</title>
  </head>
  <body>
+  <div style="color: #009900;"><%= flash[:notice] %></div>
   <%= yield %>
+  <hr />
+  <%= debug session %>
  </body>
 </html>
