@@ -19,7 +19,7 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
-  config.gem "nayutaya-wsse", :lib => "wsse", :version => ">= 0.0.0", :source => "http://gemcutter.org"
+  config.gem "nayutaya-wsse", :lib => "wsse", :version => ">= 0.0.1", :source => "http://gemcutter.org"
   config.gem "nayutaya-kagemusha", :lib => "kagemusha", :version => ">= 0.1.0", :source => "http://gemcutter.org"
 
   # Only load the plugins named here, in the order given (default is alphabetical).

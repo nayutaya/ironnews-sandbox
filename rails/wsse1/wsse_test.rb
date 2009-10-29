@@ -3,13 +3,13 @@
 require "open-uri"
 require "rubygems"
 gem "nayutaya-wsse"
-require "wsse/username_token_builder"
+require "wsse"
 
 username = "foo"
 password = "bar"
-wsse     = Wsse::UsernameTokenBuilder.create_token(username, password)
+wsse     = Wsse::UsernameToken.build(username, password).format
 p wsse
 
-open("http://10.161.227.115:3000/api/go", {"X-WSSE" => wsse}) { |io|
+open("http://localhost:3000/api/go", {"X-WSSE" => wsse}) { |io|
   p io.read
 }
