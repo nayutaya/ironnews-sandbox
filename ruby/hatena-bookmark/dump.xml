@@ -11,6 +11,22 @@
   
   
   <entry>
+    <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17232605</id>
+    <title>一畑電車が「市場の電車」運行…島根 : ニュース : 旅ゅ〜ん！ : YOMIURI ONLINE（読売新聞）</title>
+    <link type="text/html" rel="related" href="http://www.yomiuri.co.jp/tabi/news/20091109-OYT8T00125.htm"/>
+    <link type="text/html" rel="alternate" href="http://b.hatena.ne.jp/ironnews/20091118#bookmark-17232605"/>
+    <link type="application/x.atom+xml" rel="service.edit" title="一畑電車が「市場の電車」運行…島根 : ニュース : 旅ゅ〜ん！ : YOMIURI ONLINE（読売新聞）" href="http://b.hatena.ne.jp/atom/edit/17232605"/>
+    <summary></summary>
+    
+    <issued>2009-11-18T11:31:33+09:00</issued>
+    <author>
+      <name>ironnews</name>
+    </author>
+    <dc:subject>鉄道</dc:subject>
+    <dc:subject>中国</dc:subject>
+    <dc:subject>イベント</dc:subject>
+  </entry>
+  <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17417294</id>
     <title>踏切にバイク、電車衝突…男が現場立ち去る : 社会 : YOMIURI ONLINE（読売新聞）</title>
     <link type="text/html" rel="related" href="http://www.yomiuri.co.jp/national/news/20091118-OYT1T00365.htm"/>
@@ -3378,6 +3394,7 @@
     <dc:subject>鉄道</dc:subject>
     <dc:subject>事件</dc:subject>
     <dc:subject>東海道新幹線</dc:subject>
+    <dc:subject>中部</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17379639</id>
@@ -3992,6 +4009,7 @@
     <author>
       <name>ironnews</name>
     </author>
+    <dc:subject>鉄道</dc:subject>
     <dc:subject>近畿</dc:subject>
     <dc:subject>九州</dc:subject>
     <dc:subject>九州新幹線</dc:subject>
@@ -7643,6 +7661,10 @@
     <author>
       <name>ironnews</name>
     </author>
+    <dc:subject>鉄道</dc:subject>
+    <dc:subject>近畿</dc:subject>
+    <dc:subject>事件</dc:subject>
+    <dc:subject>jr宝塚線</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17275553</id>
@@ -7674,19 +7696,6 @@
     <dc:subject>関東</dc:subject>
   </entry>
   <entry>
-    <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17275549</id>
-    <title>NSJショートライブ - 毎日ｊｐ(毎日新聞)</title>
-    <link type="text/html" rel="related" href="http://mainichi.jp/life/money/kabu/nsj/news/20091110184520.html"/>
-    <link type="text/html" rel="alternate" href="http://b.hatena.ne.jp/ironnews/20091111#bookmark-17275549"/>
-    <link type="application/x.atom+xml" rel="service.edit" title="NSJショートライブ - 毎日ｊｐ(毎日新聞)" href="http://b.hatena.ne.jp/atom/edit/17275549"/>
-    <summary></summary>
-    
-    <issued>2009-11-11T15:37:52+09:00</issued>
-    <author>
-      <name>ironnews</name>
-    </author>
-  </entry>
-  <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17275546</id>
     <title>奈良もＪＲ徐行運転、通勤通学が混乱　近畿東海で大雨 - MSN産経ニュース</title>
     <link type="text/html" rel="related" href="http://sankei.jp.msn.com/affairs/disaster/091111/dst0911111206007-n1.htm"/>
@@ -7713,6 +7722,10 @@
     <author>
       <name>ironnews</name>
     </author>
+    <dc:subject>鉄道</dc:subject>
+    <dc:subject>近畿</dc:subject>
+    <dc:subject>山陽新幹線</dc:subject>
+    <dc:subject>事故</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17275525</id>
@@ -7726,6 +7739,7 @@
     <author>
       <name>ironnews</name>
     </author>
+    <dc:subject>非鉄</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17275523</id>
@@ -7739,6 +7753,9 @@
     <author>
       <name>ironnews</name>
     </author>
+    <dc:subject>鉄道</dc:subject>
+    <dc:subject>北陸新幹線</dc:subject>
+    <dc:subject>政治</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17275518</id>
@@ -7752,6 +7769,10 @@
     <author>
       <name>ironnews</name>
     </author>
+    <dc:subject>鉄道</dc:subject>
+    <dc:subject>近畿</dc:subject>
+    <dc:subject>東海道新幹線</dc:subject>
+    <dc:subject>政治</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17275517</id>
@@ -7765,6 +7786,7 @@
     <author>
       <name>ironnews</name>
     </author>
+    <dc:subject>非鉄</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17275516</id>
@@ -7804,6 +7826,7 @@
     <author>
       <name>ironnews</name>
     </author>
+    <dc:subject>非鉄</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17275422</id>
@@ -7907,6 +7930,9 @@
     <author>
       <name>ironnews</name>
     </author>
+    <dc:subject>鉄道</dc:subject>
+    <dc:subject>海外</dc:subject>
+    <dc:subject>事故</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17274998</id>
@@ -7920,6 +7946,9 @@
     <author>
       <name>ironnews</name>
     </author>
+    <dc:subject>鉄道</dc:subject>
+    <dc:subject>関東</dc:subject>
+    <dc:subject>社会</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17274938</id>
@@ -7936,19 +7965,6 @@
     <dc:subject>鉄道</dc:subject>
     <dc:subject>jr山陽線</dc:subject>
     <dc:subject>jr神戸線</dc:subject>
-  </entry>
-  <entry>
-    <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17274929</id>
-    <title>一畑電車が「市場の電車」運行…島根 : ニュース : 旅ゅ〜ん！ : YOMIURI ONLINE（読売新聞）</title>
-    <link type="text/html" rel="related" href="http://www.yomiuri.co.jp/tabi/news/20091109-OYT8T00125.htm?from=yoltop"/>
-    <link type="text/html" rel="alternate" href="http://b.hatena.ne.jp/ironnews/20091111#bookmark-17274929"/>
-    <link type="application/x.atom+xml" rel="service.edit" title="一畑電車が「市場の電車」運行…島根 : ニュース : 旅ゅ〜ん！ : YOMIURI ONLINE（読売新聞）" href="http://b.hatena.ne.jp/atom/edit/17274929"/>
-    <summary></summary>
-    
-    <issued>2009-11-11T14:59:05+09:00</issued>
-    <author>
-      <name>ironnews</name>
-    </author>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17274926</id>
@@ -7976,19 +7992,8 @@
     <author>
       <name>ironnews</name>
     </author>
-  </entry>
-  <entry>
-    <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17274823</id>
-    <title>NSJショートライブ - 毎日ｊｐ(毎日新聞)</title>
-    <link type="text/html" rel="related" href="http://mainichi.jp/life/money/kabu/nsj/news/20091110184482.html"/>
-    <link type="text/html" rel="alternate" href="http://b.hatena.ne.jp/ironnews/20091111#bookmark-17274823"/>
-    <link type="application/x.atom+xml" rel="service.edit" title="NSJショートライブ - 毎日ｊｐ(毎日新聞)" href="http://b.hatena.ne.jp/atom/edit/17274823"/>
-    <summary></summary>
-    
-    <issued>2009-11-11T14:52:47+09:00</issued>
-    <author>
-      <name>ironnews</name>
-    </author>
+    <dc:subject>鉄道</dc:subject>
+    <dc:subject>社会</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17274821</id>
@@ -8002,6 +8007,9 @@
     <author>
       <name>ironnews</name>
     </author>
+    <dc:subject>鉄道</dc:subject>
+    <dc:subject>中部</dc:subject>
+    <dc:subject>イベント</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17274820</id>
@@ -8015,19 +8023,9 @@
     <author>
       <name>ironnews</name>
     </author>
-  </entry>
-  <entry>
-    <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17274797</id>
-    <title>The Chemical Daily - News</title>
-    <link type="text/html" rel="related" href="http://www.chemicaldaily.co.jp/news/200911/11/04601_2131.html"/>
-    <link type="text/html" rel="alternate" href="http://b.hatena.ne.jp/ironnews/20091111#bookmark-17274797"/>
-    <link type="application/x.atom+xml" rel="service.edit" title="The Chemical Daily - News" href="http://b.hatena.ne.jp/atom/edit/17274797"/>
-    <summary></summary>
-    
-    <issued>2009-11-11T14:51:25+09:00</issued>
-    <author>
-      <name>ironnews</name>
-    </author>
+    <dc:subject>鉄道</dc:subject>
+    <dc:subject>社会</dc:subject>
+    <dc:subject>関東</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17274769</id>
@@ -8041,6 +8039,8 @@
     <author>
       <name>ironnews</name>
     </author>
+    <dc:subject>鉄道</dc:subject>
+    <dc:subject>海外</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17274688</id>
@@ -8054,6 +8054,8 @@
     <author>
       <name>ironnews</name>
     </author>
+    <dc:subject>鉄道</dc:subject>
+    <dc:subject>社会</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17269651</id>
@@ -9550,6 +9552,7 @@
     </author>
     <dc:subject>鉄道</dc:subject>
     <dc:subject>東北新幹線</dc:subject>
+    <dc:subject>東北</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17134102</id>
@@ -9595,6 +9598,7 @@
     </author>
     <dc:subject>鉄道</dc:subject>
     <dc:subject>東北新幹線</dc:subject>
+    <dc:subject>東北</dc:subject>
   </entry>
   <entry>
     <id>tag:hatena.ne.jp,2005:bookmark-ironnews-17251734</id>
