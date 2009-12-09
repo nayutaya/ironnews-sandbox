@@ -4,7 +4,7 @@
 
 require "mlp_categorizer"
 
-input_files = {
+train_files = {
   "rail" => "sample_rail_a.txt",
   "rest" => "sample_rest_a.txt",
 }
@@ -13,8 +13,8 @@ test_files = {
   "rest" => "sample_rest_b.txt",
 }
 
-count      = 5
-hidden_num = 1
+count      = 10
+hidden_num = 10
 weight     = 0.5
 thresholds = {"rail" => 0.1, "rest" => 0.3}
 
@@ -23,7 +23,7 @@ categorizer = MlpCategorizer.new(tokenizer, :classifier => {:hidden_num => hidde
 
 STDERR.puts("shuffling...")
 training_data = []
-input_files.each { |category, filepath|
+train_files.each { |category, filepath|
   File.open(filepath) { |file|
     file.each { |line|
       training_data << [category, line.chomp]
@@ -56,9 +56,12 @@ test_files.each { |expected, filename|
 
 p table
 
-p table["rail-rail"]    / table["rail"].to_f * 100
-p table["rail-rest"]    / table["rail"].to_f * 100
-p table["rail-unknown"] / table["rail"].to_f * 100
-p table["rest-rail"]    / table["rest"].to_f * 100
-p table["rest-rest"]    / table["rest"].to_f * 100
-p table["rest-unknown"] / table["rest"].to_f * 100
+score  = 0.0
+score += table["rail-rail"]    / table["rail"].to_f * 100 * 1.0
+score -= table["rail-rest"]    / table["rail"].to_f * 100 * 3.0
+score -= table["rail-unknown"] / table["rail"].to_f * 100 * 1.0
+score -= table["rest-rail"]    / table["rest"].to_f * 100 * 1.0
+score += table["rest-rest"]    / table["rest"].to_f * 100 * 1.0
+score -= table["rest-unknown"] / table["rest"].to_f * 100 * 1.0
+
+p score
