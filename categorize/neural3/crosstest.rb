@@ -4,64 +4,58 @@
 
 require "mlp_categorizer"
 
-train_files = {
-  "rail" => "sample_rail_a.txt",
-  "rest" => "sample_rest_a.txt",
-}
-test_files = {
-  "rail" => "sample_rail_b.txt",
-  "rest" => "sample_rest_b.txt",
-}
+srand(0)
 
-count      = 10
-hidden_num = 10
-weight     = 0.5
-thresholds = {"rail" => 0.1, "rest" => 0.3}
+STDERR.puts("loading...")
+training_data  = []
+training_data += File.foreach("sample_rail_a.txt").map { |line| ["rail", line.strip] }
+training_data += File.foreach("sample_rest_a.txt").map { |line| ["rest", line.strip] }
+training_data  = training_data.sort_by { rand }
+test_data      = []
+test_data     += File.foreach("sample_rail_b.txt").map { |line| ["rail", line.strip] }
+test_data     += File.foreach("sample_rest_b.txt").map { |line| ["rest", line.strip] }
 
-tokenizer   = BigramTokenizer.new
-categorizer = MlpCategorizer.new(tokenizer, :classifier => {:hidden_num => hidden_num, :weight => weight})
+calc = proc { |params|
+  srand(0)
+  tokenizer   = BigramTokenizer.new
+  categorizer = MlpCategorizer.new(
+    tokenizer,
+    :classifier => {:hidden_num => params[:hidden], :weight => params[:weight]})
 
-STDERR.puts("shuffling...")
-training_data = []
-train_files.each { |category, filepath|
-  File.open(filepath) { |file|
-    file.each { |line|
-      training_data << [category, line.chomp]
+  STDERR.puts("training...")
+  params[:count].times { |i|
+    STDERR.printf("%i/%i\n", i + 1, params[:count])
+    training_data.each { |category, line|
+      categorizer.train(category, line)
     }
   }
-}
 
-srand(0)
-training_data = training_data.sort_by { rand }
-
-STDERR.puts("training...")
-count.times { |i|
-  STDERR.printf("%i/%i\n", i + 1, count)
-  training_data.each { |category, line|
-    categorizer.train(category, line)
-  }
-}
-
-table = Hash.new(0)
-
-STDERR.puts("categorizing...")
-test_files.each { |expected, filename|
-  File.foreach(filename) { |line|
-    line.chomp!
+  STDERR.puts("categorizing...")
+  thresholds = {"rail" => params[:rail], "rest" => params[:rest]}
+  table = Hash.new(0)
+  test_data.each { |expected, line|
     actual = categorizer.categorize(line, thresholds) || "unknown"
     table[expected + "-" + actual] += 1
     table[expected] += 1
   }
+
+  score  = 0.0
+  score += table["rail-rail"]    / table["rail"].to_f * 100 * 1.0
+  score -= table["rail-rest"]    / table["rail"].to_f * 100 * 3.0
+  score -= table["rail-unknown"] / table["rail"].to_f * 100 * 1.0
+  score -= table["rest-rail"]    / table["rest"].to_f * 100 * 1.0
+  score += table["rest-rest"]    / table["rest"].to_f * 100 * 1.0
+  score -= table["rest-unknown"] / table["rest"].to_f * 100 * 1.0
+  score
 }
 
-p table
+x = {
+  :hidden => 5,
+  :count  => 1,
+  :weight => 0.1,
+  :rail   => 0.1,
+  :rest   => 0.3,
+}
 
-score  = 0.0
-score += table["rail-rail"]    / table["rail"].to_f * 100 * 1.0
-score -= table["rail-rest"]    / table["rail"].to_f * 100 * 3.0
-score -= table["rail-unknown"] / table["rail"].to_f * 100 * 1.0
-score -= table["rest-rail"]    / table["rest"].to_f * 100 * 1.0
-score += table["rest-rest"]    / table["rest"].to_f * 100 * 1.0
-score -= table["rest-unknown"] / table["rest"].to_f * 100 * 1.0
-
-p score
+p x
+p calc[x]
