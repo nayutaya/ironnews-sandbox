@@ -9,18 +9,19 @@ srand(0)
 rail_titles = rail_titles.sort_by { rand }
 rest_titles = rest_titles.sort_by { rand }
 
-num = [rail_titles.size, rest_titles.size].min / 2
+rail_size = rail_titles.size / 2
+rest_size = rest_titles.size / 2
 
 File.open("sample_rail_a.txt", "wb") { |file|
-  file.puts(rail_titles.slice!(0, num))
+  file.puts(rail_titles.slice!(0, rail_size))
 }
 File.open("sample_rail_b.txt", "wb") { |file|
-  file.puts(rail_titles.slice!(0, num))
+  file.puts(rail_titles.slice!(0, rail_size))
 }
 
 File.open("sample_rest_a.txt", "wb") { |file|
-  file.puts(rest_titles.slice!(0, num))
+  file.puts(rest_titles.slice!(0, rest_size))
 }
 File.open("sample_rest_b.txt", "wb") { |file|
-  file.puts(rest_titles.slice!(0, num))
+  file.puts(rest_titles.slice!(0, rest_size))
 }
