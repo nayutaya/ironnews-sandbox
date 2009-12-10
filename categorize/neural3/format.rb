@@ -2,7 +2,7 @@
 
 STDIN.each { |line|
   value = eval(line)
-  printf("%i\t%i\t%.2f\t%.2f\t%.2f\t%i\t%i\n",
+  printf("%i\t%i\t%.2f\t%.2f\t%.2f\t%i\t%.2f\n",
     value[:hidden],
     value[:count],
     value[:weight],
