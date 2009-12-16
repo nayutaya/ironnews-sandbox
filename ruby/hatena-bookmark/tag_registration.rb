@@ -10,10 +10,10 @@ require "bookmark_utility"
 gem "nayutaya-wsse"
 require "wsse"
 
-list = [
-  ["http://373news.com/modules/pickup/index.php?storyid=20485", %w[鉄道 社会]],
-  #["http://4510plan.jp/360/newscolumn/12119/", %w[非鉄]],
-]
+list = STDIN.map { |line|
+  url, tags = line.chomp.split(/\t/)
+  [url, tags.split(/,/)]
+}
 
 username, password = File.open("ironnews.id") { |file| [file.gets.chomp, file.gets.chomp] }
 
@@ -28,13 +28,27 @@ list.each { |url, tags|
   canonical_url = BookmarkUtility.get_canonical_url(url)
 
   add_url = "http://ironnews.nayutaya.jp/api/add_article?url1=" + CGI.escape(canonical_url)
-  result  = open(add_url, {"X-WSSE" => create_wsse[]}) { |io| JSON.parse(io.read) }
-  p article_id = result["result"]["1"]["article_id"]
+  count = 0
+  begin
+    result = open(add_url, {"X-WSSE" => create_wsse[]}) { |io| JSON.parse(io.read) }
+  rescue OpenURI::HTTPError
+    if count < 5
+      count += 1
+      sleep(1)
+      puts("retry#{count}")
+      retry
+    else
+      raise
+    end
+  end
+
+  article_id = result["result"]["1"]["article_id"]
 
   tags.each { |tag|
     puts(NKF.nkf("-s", tag))
     tag_url = "http://ironnews.nayutaya.jp/api/add_tags?article_id=#{article_id}&tag1=#{CGI.escape(tag)}"
     result2 = open(tag_url, {"X-WSSE" => create_wsse[]}) { |io| JSON.parse(io.read) }
-    p result2
   }
+
+  sleep(0.2)
 }
