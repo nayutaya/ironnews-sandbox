@@ -17,9 +17,34 @@ def create_wsse
 end
 
 def get_user_tagged_articles(tag, page = 1, per_page = 10)
-  url = "http://ironnews.nayutaya.jp/api/get_user_tagged_articles?tag=#{CGI.escape(tag)}"
+  url = "http://ironnews.nayutaya.jp/api/get_user_tagged_articles?tag=#{CGI.escape(tag)}&page=#{page}&per_page=#{per_page}"
   return open(url, {"X-WSSE" => create_wsse}) { |io| JSON.parse(io.read) }
 end
 
+def get_all_user_tagged_articles(tag)
+  articles = []
 
-result = get_user_tagged_articles("鉄道", 1, 100)
+  page = 1
+  loop {
+    result = get_user_tagged_articles(tag, page, 100)
+    articles += result["result"]["articles"]
+
+    break if result["result"]["total_pages"] <= page
+    page += 1
+  }
+  return articles
+end
+
+articles = get_all_user_tagged_articles("鉄道")
+File.open("rail.txt", "wb") { |file|
+  articles.each { |article|
+    file.puts([article["url"], article["title"].gsub(/[\r\n]/, "")].join("\t"))
+  }
+}
+
+articles = get_all_user_tagged_articles("非鉄")
+File.open("rest.txt", "wb") { |file|
+  articles.each { |article|
+    file.puts([article["url"], article["title"].gsub(/[\r\n]/, "")].join("\t"))
+  }
+}
