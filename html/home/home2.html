@@ -51,6 +51,9 @@ var loadArticles = function(target, params) {
 $(function() {
   loadArticles($("#division-rail"),    {division_tag: "鉄道"});
   loadArticles($("#division-nonrail"), {division_tag: "非鉄"});
+
+  loadArticles($("#category-social"),   {division_tag: "鉄道", category_tag: "社会"});
+  loadArticles($("#category-accident"), {division_tag: "鉄道", category_tag: "事件事故"});
 });
   </script>
  </head>
@@ -61,11 +64,24 @@ $(function() {
    <tr>
     <td>
      <h1>鉄道</h1>
-     <div id="division-rail">読み込み中...</div>
+     <div id="division-rail" style="min-width: 200px; min-height: 200px;">読み込み中...</div>
     </td>
     <td>
      <h1>非鉄</h1>
-     <div id="division-nonrail">読み込み中...</div>
+     <div id="division-nonrail" style="min-width: 200px; min-height: 200px;">読み込み中...</div>
+    </td>
+   </tr>
+  </table>
+
+  <table border="1">
+   <tr>
+    <td>
+     <h1>社会</h1>
+     <div id="category-social" style="min-width: 200px; min-height: 200px;">読み込み中...</div>
+    </td>
+    <td>
+     <h1>事件・事故</h1>
+     <div id="category-accident" style="min-width: 200px; min-height: 200px;">読み込み中...</div>
     </td>
    </tr>
   </table>
