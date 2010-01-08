@@ -10,14 +10,25 @@
 var createArticleList = function(articles) {
   var list = $("<ul/>");
   $.each(articles, function() {
+    var item = $("<li/>");
+    item.appendTo(list);
+
     var link = $("<a/>");
     link.text(this.title);
     link.attr("href", this.url);
-    var item = $("<li/>");
-    item.append(link);
-    list.append(item);
+    link.appendTo(item);
   });
   return list;
+};
+
+var api = {};
+api.getCombinedTaggedArticles = function(options) {
+  if ( options == null ) options = {};
+  options.url      = "http://ironnews.nayutaya.jp/api/get_combined_tagged_articles";
+  options.type     = "GET";
+  options.dataType = "jsonp";
+  options.cache    = true;
+  $.ajax(options);
 };
 
 var loadArticles = function(target, params) {
@@ -31,12 +42,8 @@ var loadArticles = function(target, params) {
     target.append(list);
   };
 
-  $.ajax({
-    type: "GET",
-    url: "http://ironnews.nayutaya.jp/api/get_combined_tagged_articles",
+  api.getCombinedTaggedArticles({
     data: params,
-    dataType: "jsonp",
-    cache: true,
     success: success//,
   });
 };
