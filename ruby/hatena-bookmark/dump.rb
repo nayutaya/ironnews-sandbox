@@ -12,7 +12,7 @@ uri = URI.parse("http://b.hatena.ne.jp/dump")
 
 res = Net::HTTP.start(uri.host, uri.port) {|http|
   http.open_timeout = 5
-  http.read_timeout = 60 * 3
+  http.read_timeout = 60 * 10
   http.get(uri.path, {"X-WSSE" => wsse})
 }
 
