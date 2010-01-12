@@ -1,5 +1,7 @@
 #! ruby -Ku
 
+# dump.xmlを読み込み、「非鉄」タグが設定されているブックマークをはてなブックマークから削除する
+
 require "net/http"
 require "rubygems"
 require "nokogiri"
@@ -12,9 +14,18 @@ create_wsse = proc {
   Wsse::UsernameToken.build(username, password).format
 }
 
-#url = "http://gigazine.net/index.php?/news/comments/20100112_break_unbreakable_phone/"
-
-Net::HTTP.start('b.hatena.ne.jp') { |http|
-  eid = 18477375
-  p http.delete("/atom/edit/#{eid}", {'x-wsse' => create_wsse[]})
+doc = File.open("dump.xml", "rb") { |file| Nokogiri(file) }
+items = doc.xpath("//entry").map { |item|
+  id    = item.xpath("id").text[/-(\d+)$/, 1]
+  url   = item.xpath("link[@rel='related']").attribute("href").text
+  tags  = item.xpath("subject").map { |tag| tag.text }
+  [id, url, tags]
+}.select { |id, url, tags|
+  tags.include?("非鉄")
+}.each { |id, url, tags|
+  p [id, url, tags]
+  Net::HTTP.start('b.hatena.ne.jp') { |http|
+    p http.delete("/atom/edit/#{id}", {'x-wsse' => create_wsse[]})
+  }
+  sleep(1)
 }
