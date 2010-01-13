@@ -9,9 +9,6 @@ require "nokogiri"
 start_date = Date.new(2008, 2, 1)
 end_date   = Date.new(2009, 11, 1)
 
-start_date = Date.new(2008, 2, 1)
-end_date   = Date.new(2008, 2, 4)
-
 (start_date..end_date).each { |date|
   filename = date.strftime("%Y%m%d") + ".txt"
   STDERR.puts(filename)
