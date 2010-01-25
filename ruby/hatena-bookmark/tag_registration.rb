@@ -5,8 +5,8 @@ require "open-uri"
 require "nkf"
 require "rubygems"
 require "json"
-gem "nayutaya-bookmark-utility"
-require "bookmark_utility"
+gem "nayutaya-ironnews-utility"
+require "ironnews_utility"
 gem "nayutaya-wsse"
 require "wsse"
 
@@ -24,8 +24,8 @@ create_wsse = proc {
 list.each { |url, tags|
   puts(url)
 
-  next if BookmarkUtility.reject?(url)
-  canonical_url = BookmarkUtility.get_canonical_url(url)
+  next if IronnewsUtility.reject?(url)
+  canonical_url = IronnewsUtility.get_canonical_url(url)
 
   add_url = "http://ironnews.nayutaya.jp/api/add_article?url1=" + CGI.escape(canonical_url)
   count = 0
